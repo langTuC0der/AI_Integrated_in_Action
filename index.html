@@ -1,0 +1,2076 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rikkei AI Course — Trang Học Liệu Session 04 & 05</title>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Prism Code Highlighting Theme -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+  
+  <!-- Mermaid.js -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: 'dark',
+      securityLevel: 'loose',
+      themeVariables: {
+        background: '#090d16',
+        primaryColor: '#1e293b',
+        primaryTextColor: '#f3f4f6',
+        lineColor: '#8b5cf6',
+        textColor: '#f3f4f6'
+      }
+    });
+  </script>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo">
+          <i class="fas fa-brain"></i>
+        </div>
+        <div class="brand-text">Rikkei AI Academy</div>
+      </div>
+      
+      <!-- Session Selector -->
+      <div class="session-selector">
+        <button class="session-btn active" data-session="home">
+          <i class="fas fa-home"></i>
+          <span>Tổng quan khóa học</span>
+        </button>
+        <button class="session-btn" data-session="s4">
+          <i class="fas fa-project-diagram"></i>
+          <span>Session 04: AI Agent</span>
+        </button>
+        <button class="session-btn" data-session="s5">
+          <i class="fas fa-database"></i>
+          <span>Session 05: Vector DB & RAG</span>
+        </button>
+      </div>
+
+      <!-- Navigation for Session 04 -->
+      <nav class="lesson-navigation" id="s4-nav" style="display: none;">
+        <div class="nav-label">Bài học Session 04</div>
+        <button class="lesson-nav-btn active" data-lesson="s4_l1">
+          <i class="fas fa-book-open"></i>
+          <span>Lesson 01 — AI Agent & Chat Memory</span>
+        </button>
+        <button class="lesson-nav-btn" data-lesson="s4_l2">
+          <i class="fas fa-exchange-alt"></i>
+          <span>Lesson 02 — Function Calling Mechanics</span>
+        </button>
+        <button class="lesson-nav-btn" data-lesson="s4_l3">
+          <i class="fas fa-box-open"></i>
+          <span>Lesson 03 — Service thành @Tool</span>
+        </button>
+        <button class="lesson-nav-btn" data-lesson="s4_l4">
+          <i class="fas fa-concierge-bell"></i>
+          <span>Lesson 04 — AI Booking Agent thực chiến</span>
+        </button>
+      </nav>
+
+      <!-- Navigation for Session 05 -->
+      <nav class="lesson-navigation" id="s5-nav" style="display: none;">
+        <div class="nav-label">Bài học Session 05</div>
+        <button class="lesson-nav-btn" data-lesson="s5_l1">
+          <i class="fas fa-chart-line"></i>
+          <span>Lesson 01 — Embeddings Vector hóa</span>
+        </button>
+        <button class="lesson-nav-btn" data-lesson="s5_l2">
+          <i class="fas fa-calculator"></i>
+          <span>Lesson 02 — Cosine Similarity</span>
+        </button>
+        <button class="lesson-nav-btn" data-lesson="s5_l3">
+          <i class="fas fa-server"></i>
+          <span>Lesson 03 — Vector DB & PGVector</span>
+        </button>
+        <button class="lesson-nav-btn" data-lesson="s5_l4">
+          <i class="fas fa-robot"></i>
+          <span>Lesson 04 — RAG Chatbot tài liệu nội bộ</span>
+        </button>
+      </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <header class="header">
+        <div class="header-title">
+          <h1 id="header-session-title">Hệ thống học liệu AI Integrated in Action</h1>
+        </div>
+        <div class="header-meta">
+          <span class="tech-pill" style="display: none;">Spring AI 1.1.5</span>
+          <span class="tech-pill" style="display: none;">Spring Boot 3.5.15</span>
+        </div>
+      </header>
+
+      <div class="content-wrapper">
+        
+        <!-- ==================== HOME / COURSE HUB VIEW ==================== -->
+        <section class="lesson-section active" id="home_view">
+          <div class="home-hero">
+            <div class="lesson-subtitle">Tổng quan lộ trình</div>
+            <h2>AI Integrated in Action</h2>
+            <p>Khóa học thực chiến xây dựng các hệ thống AI thông minh cho lập trình viên Java và Spring Boot. Từ các khái niệm nền tảng LLM, chuẩn hóa dữ liệu, đến xây dựng AI Agent, Vector Database, RAG, MCP Protocol và LLMOps.</p>
+            <div class="progress-section">
+              <span class="scenario-label" style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);">Tiến trình khóa học</span>
+              <div class="progress-bar-wrapper">
+                <div class="progress-bar-fill"></div>
+              </div>
+              <span class="progress-text">2 / 5 Sessions</span>
+            </div>
+          </div>
+
+          <div class="home-grid">
+            <!-- Session 01 (Locked) -->
+            <div class="course-card locked" data-session="s1">
+              <span class="card-badge locked"><i class="fas fa-lock"></i> Chờ nội dung</span>
+              <span class="card-session-num">Session 01</span>
+              <h3 class="card-session-title">Định hướng môn học</h3>
+              <p class="card-session-desc">Giới thiệu tổng quan nội dung & kiến thức môn học. Tại sao cần học môn này — hậu quả nếu không học.</p>
+              <button class="card-action-btn" disabled><i class="fas fa-lock"></i> Chưa mở</button>
+            </div>
+
+            <!-- Session 02 (Locked) -->
+            <div class="course-card locked" data-session="s2">
+              <span class="card-badge locked"><i class="fas fa-lock"></i> Chờ nội dung</span>
+              <span class="card-session-num">Session 02</span>
+              <h3 class="card-session-title">Tích hợp LLM & Chuẩn hóa</h3>
+              <p class="card-session-desc">Kiến trúc Spring AI, Streaming API, chuẩn hóa đầu ra Structured Output & ETL Pipeline.</p>
+              <button class="card-action-btn" disabled><i class="fas fa-lock"></i> Chưa mở</button>
+            </div>
+
+            <!-- Session 03 (Locked) -->
+            <div class="course-card locked" data-session="s3">
+              <span class="card-badge locked"><i class="fas fa-lock"></i> Chờ nội dung</span>
+              <span class="card-session-num">Session 03</span>
+              <h3 class="card-session-title">Thực hành LLM & Spring AI</h3>
+              <p class="card-session-desc">Xây dựng Multi-Model Fallback, CV Screener trích xuất thông tin, Invoice ETL Pipeline tự sửa lỗi, AI Safety.</p>
+              <button class="card-action-btn" disabled><i class="fas fa-lock"></i> Chưa mở</button>
+            </div>
+
+            <!-- Session 04 (Active) -->
+            <div class="course-card" data-session="s4" style="cursor: pointer;">
+              <span class="card-badge active"><i class="fas fa-check"></i> Đã mở</span>
+              <span class="card-session-num">Session 04</span>
+              <h3 class="card-session-title">AI Agent & Function Calling</h3>
+              <p class="card-session-desc">Vòng lặp ReAct, quản lý Chat Memory, cơ chế Function Calling & xây dựng Multi-Tool Booking Agent.</p>
+              <button class="card-action-btn"><i class="fas fa-book-open"></i> Xem học liệu</button>
+            </div>
+
+            <!-- Session 05 (Active) -->
+            <div class="course-card" data-session="s5" style="cursor: pointer;">
+              <span class="card-badge active"><i class="fas fa-check"></i> Đã mở</span>
+              <span class="card-session-num">Session 05</span>
+              <h3 class="card-session-title">Vector Database & RAG</h3>
+              <p class="card-session-desc">Vector Embeddings, tính Cosine Similarity, đánh chỉ mục HNSW PGVector & xây dựng RAG Chatbot tài liệu nội bộ.</p>
+              <button class="card-action-btn"><i class="fas fa-book-open"></i> Xem học liệu</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== SESSION 04 LESSON 01 ==================== -->
+        <section class="lesson-section" id="s4_l1">
+          <div class="lesson-banner">
+            <div class="lesson-subtitle">LESSON 01</div>
+            <h2 class="lesson-title">Kiến trúc AI Agent & Chat Memory</h2>
+          </div>
+
+          <div class="tab-container">
+            <div class="tab-nav">
+              <button class="tab-btn active" data-tab="theory"><i class="fas fa-book"></i> Lý thuyết</button>
+              <button class="tab-btn" data-tab="diagram"><i class="fas fa-project-diagram"></i> Sơ đồ & Minh họa</button>
+              <button class="tab-btn" data-tab="practice"><i class="fas fa-laptop-code"></i> Thực hành & Demo</button>
+              <button class="tab-btn" data-tab="video"><i class="fas fa-video"></i> Video Prompt</button>
+              <button class="tab-btn" data-tab="slide"><i class="fas fa-images"></i> Slides Prompt</button>
+            </div>
+
+            <!-- Tab: Theory -->
+            <div class="tab-pane active" id="s4_l1_pane_theory">
+              <div class="theory-content">
+                <h3>1.1 AI Agent là gì?</h3>
+                <p>Khác với mô hình ngôn ngữ (LLM) thông thường chỉ nhận Input và tạo ra Output (dạng Stateless), <strong>AI Agent</strong> là một hệ thống có khả năng tự động thực hiện các hành động phức tạp bằng cách lặp lại chu kỳ: <strong>Reasoning (Tư duy) -> Acting (Hành động) -> Observing (Quan sát)</strong>.</p>
+                <ul>
+                  <li><strong>Reasoning (Tư duy):</strong> Đánh giá ý định của người dùng và quyết định hành động tiếp theo.</li>
+                  <li><strong>Acting (Hành động):</strong> Sử dụng các công cụ bên ngoài (Database, API, hệ thống thanh toán).</li>
+                  <li><strong>Observing (Quan sát):</strong> Đọc kết quả trả về từ hành động để lập kế hoạch cho bước tiếp theo.</li>
+                </ul>
+                <div class="info-card">
+                  <div class="info-card-title"><i class="fas fa-lightbulb"></i> So sánh dễ hiểu</div>
+                  <p><strong>LLM thông thường:</strong> Giống như một nhà thông thái chỉ biết trả lời câu hỏi dựa trên kiến thức có sẵn trong đầu.</p>
+                  <p><strong>AI Agent:</strong> Giống như một nhân viên có máy tính riêng, có quyền truy cập Internet, database và có thể thay bạn gọi hàm, thực thi các nghiệp vụ thực tế từ A-Z.</p>
+                </div>
+
+                <h3>1.2 Mô hình ReAct (Reason + Act)</h3>
+                <p>ReAct là một trong những framework phổ biến nhất giúp Agent hoạt động hiệu quả bằng cách kết hợp khả năng lập luận logic của LLM với khả năng tương tác môi trường bên ngoài:</p>
+                <div class="info-card" style="background: rgba(6,182,212,0.05); border-color: var(--secondary)">
+                  <p style="font-family: var(--font-mono); font-size: 0.9rem; text-align: center;">
+                    [User Request] ──> [Thought (LLM lập luận)] ──> [Action (Gọi Tool)] ──> [Observation (Kết quả từ Tool)] ──> [Thought...] ──> [Final Answer]
+                  </p>
+                </div>
+                <p>Nếu không có vòng lặp ReAct, LLM sẽ cố gắng "đoán" kết quả và dẫn đến hiện tượng <strong>ảo tưởng (hallucination)</strong> khi gặp các câu hỏi yêu cầu dữ liệu thời gian thực hoặc ghi chép nghiệp vụ.</p>
+
+                <h3>1.3 Chat Memory — Trí nhớ hội thoại</h3>
+                <p>Mặc định LLMs là <strong>Stateless</strong> (không nhớ bất kỳ thông tin nào giữa các lượt gọi API độc lập). Để xây dựng Chatbot tự nhiên, chúng ta bắt buộc phải gửi kèm toàn bộ lịch sử trò chuyện trong mỗi lượt hỏi tiếp theo.</p>
+                <p>Spring AI cung cấp interface <code>ChatMemory</code> để quản lý lịch sử này hiệu quả:</p>
+                <div class="compare-table-wrapper">
+                  <table class="compare-table">
+                    <thead>
+                      <tr>
+                        <th>Đặc điểm</th>
+                        <th>InMemoryChatMemory (RAM)</th>
+                        <th>Persistent Chat Memory (Database / Redis)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>Lưu trữ</strong></td>
+                        <td>Lưu trong RAM của JVM của ứng dụng.</td>
+                        <td>Lưu vào các DB ngoài như JDBC, Redis, PostgreSQL.</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Độ bền vững</strong></td>
+                        <td>Mất sạch dữ liệu khi restart hoặc crash ứng dụng.</td>
+                        <td>Bền vững, không sợ restart máy chủ. Phù hợp chạy Production.</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Quy mô</strong></td>
+                        <td>Phù hợp test/demo, tốn RAM nếu chat lâu.</td>
+                        <td>Hỗ trợ hàng triệu session chat đồng thời nhờ DB ngoài.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab: Diagram & Illustration -->
+            <div class="tab-pane" id="s4_l1_pane_diagram">
+              <div class="diagram-visual-container">
+                <div class="card-container">
+                  <div class="card-title"><i class="fas fa-project-diagram"></i> Workflow Diagram (Mermaid)</div>
+                  <div class="mermaid-wrapper">
+                    <pre class="mermaid">
+sequenceDiagram
+    autonumber
+    actor User as 👤 Client (Browser)
+    participant App as 💻 Spring Boot Application
+    participant Mem as 💾 ChatMemory (State)
+    participant LLM as ☁️ LLM Provider (Ollama/OpenAI)
+
+    User->>App: Gửi tin nhắn + ChatId ("Tôi muốn đặt phòng")
+    App->>Mem: Lấy lịch sử chat của ChatId
+    Mem-->>App: Trả về danh sách Messages cũ
+    App->>App: Tạo Prompt (Lịch sử + Tin nhắn mới)
+    App->>LLM: Gửi Prompt (System Prompt + History + User Message)
+    LLM-->>App: Phản hồi từ AI ("Chào bạn, bạn muốn đặt loại phòng nào?")
+    App->>Mem: Lưu tin nhắn mới của User & AI vào ChatMemory
+    App-->>User: Trả về câu trả lời cho client
+                    </pre>
+                  </div>
+                </div>
+
+                <div class="card-container">
+                  <div class="card-title"><i class="fas fa-image"></i> Ảnh minh họa 3D Illustration</div>
+                  <div class="illustration-wrapper">
+                    <img class="illustration-img" src="images/s4_l1.png" alt="AI Agent & Chat Memory">
+                  </div>
+                  <div class="prompt-drawer">
+                    <div class="prompt-drawer-header">
+                      <span>DALL-E Prompt</span>
+                      <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="prompt-drawer-body" style="display: none;">
+                      An isometric 3D illustration of an AI assistant workflow in Spring Boot. A central glowing cube labeled "Spring AI Client" with neon lines connecting to a database cylinder labeled "Chat Memory (Redis)" on the left, and a cloud network labeled "Ollama / OpenAI Model" on the right. A computer terminal screen shows a dialogue between a user and the AI, with tiny digital scroll elements displaying text. Sleek high-tech corporate style, vibrant blue and purple neon colors, dark theme background, soft shadows, 8k resolution, volumetric lighting, presentation graphics. The visual language is Vietnamese, with only technical terms retained in English.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab: Practice -->
+            <div class="tab-pane" id="s4_l1_pane_practice">
+              <div class="practice-container">
+                <div class="code-block-header">
+                  <span class="file-name">AgentConfig.java</span>
+                  <button class="copy-btn" onclick="copyCode(this, 's4_l1_c1')"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <div class="code-wrapper">
+                  <pre><code class="language-java" id="s4_l1_c1">package com.ai.function_calling.config;
+
+import org.springframework.ai.chat.memory.ChatMemoryRepository;
+import org.springframework.ai.chat.memory.InMemoryChatMemoryRepository;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class AgentConfig {
+
+    @Bean
+    public ChatMemoryRepository chatMemoryRepository() {
+        return new InMemoryChatMemoryRepository();
+    }
+}</code></pre>
+                </div>
+
+                <div class="code-block-header">
+                  <span class="file-name">AgentChatService.java</span>
+                  <button class="copy-btn" onclick="copyCode(this, 's4_l1_c2')"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <div class="code-wrapper">
+                  <pre><code class="language-java" id="s4_l1_c2">package com.ai.function_calling.service;
+
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
+import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.chat.memory.ChatMemoryRepository;
+import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AgentChatService {
+
+    private final ChatClient chatClient;
+
+    public AgentChatService(ChatModel chatModel, ChatMemoryRepository chatMemoryRepository) {
+        this.chatClient = ChatClient.builder(chatModel)
+                .defaultSystem("Bạn là trợ lý ảo lịch sự. Hãy giúp khách hàng đặt phòng.")
+                .defaultAdvisors(new MessageChatMemoryAdvisor(chatMemoryRepository))
+                .build();
+    }
+
+    public String chat(String chatId, String message) {
+        return this.chatClient.prompt()
+                .user(message)
+                .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, chatId))
+                .call()
+                .content();
+    }
+}</code></pre>
+                </div>
+
+                <!-- Simulator Widget -->
+                <div class="testing-lab-card" id="s4_l1_simulator">
+                  <div class="testing-lab-title">
+                    <i class="fas fa-terminal"></i> <span class="sim-title-text">Simulator: Chat Memory Flow</span>
+                  </div>
+                  <div class="sim-grid">
+                    <div class="sim-visualizer">
+                      <svg class="sim-svg-connections">
+                        <path id="path-user-spring" class="sim-connection-path" d="M 60,215 L 175,215" />
+                        <path id="path-spring-db" class="sim-connection-path" d="M 190,250 L 320,350" />
+                        <path id="path-spring-llm" class="sim-connection-path" d="M 190,190 L 320,95" />
+                      </svg>
+                      
+                      <div class="sim-node node-user" data-node="user">
+                        <i class="fas fa-user-circle fa-2x"></i><br/>User Client
+                      </div>
+                      <div class="sim-node node-spring" data-node="spring">
+                        <i class="fab fa-envira fa-2x"></i><br/>Spring Boot Client
+                      </div>
+                      <div class="sim-node node-llm" data-node="llm">
+                        <i class="fas fa-cloud-sun-rain fa-2x"></i><br/>LLM Model
+                      </div>
+                      <div class="sim-node node-db" data-node="db">
+                        <i class="fas fa-database fa-2x"></i><br/>Chat Memory (RAM)
+                      </div>
+
+                      <div class="sim-packet"></div>
+                    </div>
+
+                    <div class="sim-interface">
+                      <div class="sim-interface-header">
+                        <span class="sim-title"><i class="fas fa-play-circle"></i> Trình mô phỏng luồng chạy</span>
+                        <span class="sim-status active"><span class="sim-status-dot"></span> Đang chờ lệnh</span>
+                      </div>
+                      <div class="sim-scenarios">
+                        <span class="scenario-label">Chọn kịch bản</span>
+                        <select class="scenario-select"></select>
+                      </div>
+                      <div class="sim-chat-area"></div>
+                      <div class="sim-input-area">
+                        <input type="text" class="sim-input" placeholder="Mô phỏng đầu vào..." readonly>
+                        <button class="sim-send-btn"><i class="fas fa-play"></i> RUN</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab: Video Prompt -->
+            <div class="tab-pane" id="s4_l1_pane_video">
+              <div class="prompt-container">
+                <div class="prompt-box">
+                  <div class="card-title"><i class="fas fa-film"></i> NotebookLM Video Prompt</div>
+                  <div class="prompt-text" id="s4_l1_video_text">=== STYLE PROMPT ===
+Giọng thuyết trình: Chuyên nghiệp, kỹ thuật, cấu trúc bài giảng rõ ràng, tốc độ vừa phải.
+Ngôn ngữ: Tiếng Việt, giữ các thuật ngữ (Stateless, Context Window, Sliding Window, InMemory, Persistent).
+
+=== NỘI DUNG AUDIO ===
+[00:00] Hook: "Tại sao chatbot của bạn luôn quên những gì người dùng vừa nói ở câu trước? Hôm nay chúng ta sẽ tìm hiểu về cơ chế hoạt động của Chat Memory trong Spring AI và cách tích hợp nó chỉ với vài dòng code."
+[02:00] Giải thích Stateless: "Các mô hình ngôn ngữ lớn bản chất là Stateless — chúng không lưu trữ trạng thái cuộc hội thoại. Để giải quyết, Spring AI tự động lấy lịch sử từ ChatMemory, bồi đắp vào prompt gửi đi và lưu lại tin nhắn mới."
+[05:00] Thực hành Code: [Phân tích Class AgentConfig và AgentChatService] "Chỉ cần đăng ký Bean ChatMemoryRepository và thêm MessageChatMemoryAdvisor vào ChatClient. Bạn đã có ngay một Chatbot có trí nhớ hội thoại."
+[08:00] Trải nghiệm & Kết luận: "Việc quản lý Context Window là tối quan trọng để giảm chi phí token. Trong bài tiếp theo, chúng ta sẽ mở rộng Agent với khả năng kết nối dữ liệu ngoài qua Function Calling."</div>
+                  <button class="copy-btn" onclick="copyCode(this, 's4_l1_video_text')"><i class="fas fa-copy"></i> Sao chép Prompt</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab: Slides Prompt -->
+            <div class="tab-pane" id="s4_l1_pane_slide">
+              <div class="prompt-container">
+                <div class="prompt-box">
+                  <div class="card-title"><i class="fas fa-file-powerpoint"></i> Google Slides Prompt</div>
+                  <div class="prompt-text" id="s4_l1_slide_text">=== PHONG CÁCH TỔNG THỂ ===
+Theme: Modern Dark Developer. Nền: #0a0f1d, màu chữ: trắng và bạc. Màu nhấn: Tím ánh xanh (#a855f7).
+
+=== SLIDES ===
+Slide 1: Tiêu đề lớn: "Kiến trúc AI Agent & Trí nhớ hội thoại (Chat Memory)"
+Slide 2: Bản chất Stateless của LLM: Tại sao LLM không thể tự ghi nhớ?
+Slide 3: Chu kỳ ReAct (Reason + Act + Observe): Cách Agent hoạt động.
+Slide 4: Giao diện ChatMemory trong Spring AI: Cấu trúc lớp và các triển khai.
+Slide 5: So sánh InMemory vs Persistent Chat Memory: Khi nào nên sử dụng loại nào?
+Slide 6: Quản lý Context Window: Thách thức chi phí token và các chiến lược giải quyết (Sliding Window, Summarization).
+Slide 7: Cấu hình Bean `ChatMemoryRepository` bằng Java Code.
+Slide 8: Tích hợp `MessageChatMemoryAdvisor` vào `ChatClient`.
+Slide 9: Sơ đồ chuỗi (Sequence Diagram) vòng đời của một tin nhắn có sử dụng Memory.
+Slide 10: Tóm tắt bài học và chuẩn bị cho chuyên đề kế tiếp "Function Calling".</div>
+                  <button class="copy-btn" onclick="copyCode(this, 's4_l1_slide_text')"><i class="fas fa-copy"></i> Sao chép Prompt</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== SESSION 04 LESSON 02 ==================== -->
+        <section class="lesson-section" id="s4_l2">
+          <div class="lesson-banner">
+            <div class="lesson-subtitle">LESSON 02</div>
+            <h2 class="lesson-title">Cơ chế Function Calling trong Spring AI</h2>
+          </div>
+
+          <div class="tab-container">
+            <div class="tab-nav">
+              <button class="tab-btn active" data-tab="theory"><i class="fas fa-book"></i> Lý thuyết</button>
+              <button class="tab-btn" data-tab="diagram"><i class="fas fa-project-diagram"></i> Sơ đồ & Minh họa</button>
+              <button class="tab-btn" data-tab="practice"><i class="fas fa-laptop-code"></i> Thực hành & Demo</button>
+              <button class="tab-btn" data-tab="video"><i class="fas fa-video"></i> Video Prompt</button>
+              <button class="tab-btn" data-tab="slide"><i class="fas fa-images"></i> Slides Prompt</button>
+            </div>
+
+            <!-- Tab: Theory -->
+            <div class="tab-pane active" id="s4_l2_pane_theory">
+              <div class="theory-content">
+                <h3>2.1 Function Calling là gì?</h3>
+                <p><strong>Function Calling (Gọi hàm)</strong> là cơ chế cho phép các mô hình ngôn ngữ lớn (như GPT-4, Gemini, Qwen) kết nối trực tiếp với các API bên ngoài hoặc chạy các đoạn mã nghiệp vụ nội bộ trên máy chủ của bạn.</p>
+                <p>Điều quan trọng cần ghi nhớ: <strong>LLM không trực tiếp chạy code Java của bạn</strong>. Thay vào đó:</p>
+                <ol>
+                  <li>LLM nhận diện câu hỏi của người dùng có chứa ý định cần lấy dữ liệu ngoài.</li>
+                  <li>LLM quyết định gọi hàm nào và tự động sinh ra đối tượng JSON chứa tham số truyền vào phù hợp.</li>
+                  <li>Spring AI nhận kết quả JSON này, tìm và thực thi hàm Java tương ứng trên Server của bạn.</li>
+                  <li>Spring AI gửi trả kết quả thực thi của hàm (dạng văn bản/JSON) về cho LLM.</li>
+                  <li>LLM đọc kết quả đó và tổng hợp thành câu trả lời tự nhiên nhất gửi tới người dùng.</li>
+                </ol>
+
+                <h3>2.2 Cơ chế định nghĩa Tool qua Functional Interface</h3>
+                <p>Spring AI sử dụng các functional interface tiêu chuẩn của Java để định nghĩa công cụ, phổ biến nhất là <code>java.util.function.Function&lt;Request, Response&gt;</code>.</p>
+                <p>Spring AI sẽ tự động đọc cấu trúc của lớp Request (dùng Jackson và JSON Schema generator) để tạo ra bản đặc tả JSON Schema gửi tới LLM. Do đó, việc đặt tên trường rõ ràng và sử dụng annotation <code>@JsonPropertyDescription</code> để mô tả biến là cực kỳ quan trọng để LLM hiểu đúng và chọn đúng tool.</p>
+              </div>
+            </div>
+
+            <!-- Tab: Diagram & Illustration -->
+            <div class="tab-pane" id="s4_l2_pane_diagram">
+              <div class="diagram-visual-container">
+                <div class="card-container">
+                  <div class="card-title"><i class="fas fa-project-diagram"></i> Workflow Diagram (Mermaid)</div>
+                  <div class="mermaid-wrapper">
+                    <pre class="mermaid">
+graph TD
+    A["👤 User: 'Đổi 100 USD sang VND'"] --> B["💻 Spring Boot Application"]
+    B -->|"Gửi Prompt + Đặc tả Tool exchange(amount, from, to)"| C["☁️ LLM Provider"]
+    C -->|"Nhận diện intent & trả JSON:<br/>{ 'function': 'exchange', 'args': { 'amount': 100, 'from': 'USD', 'to': 'VND' } }"| B
+    B -->|"1. Parse arguments<br/>2. Gọi Java Bean: exchangeService.apply(...)"| D["☕ Java Method (Exchange Tool)"]
+    D -->|"Trả về: '2,540,000 VND'"| B
+    B -->|"Gửi kết quả thực thi của Tool cho LLM"| C
+    C -->|"Hợp nhất dữ liệu & Sinh câu trả lời tự nhiên"| E["💬 AI: '100 USD đổi được 2,540,000 VND'"]
+    E --> B
+    B --> F["👤 User nhận kết quả"]
+                    </pre>
+                  </div>
+                </div>
+
+                <div class="card-container">
+                  <div class="card-title"><i class="fas fa-image"></i> Ảnh minh họa 3D Illustration</div>
+                  <div class="illustration-wrapper">
+                    <img class="illustration-img" src="images/s4_l2.png" alt="Function Calling Mechanics">
+                  </div>
+                  <div class="prompt-drawer">
+                    <div class="prompt-drawer-header">
+                      <span>DALL-E Prompt</span>
+                      <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="prompt-drawer-body" style="display: none;">
+                      A technical diagram demonstrating the sequence of Function Calling in Spring AI. On the left, a Java code editor interface showing a method signature with @Bean. In the middle, a JSON data packet being sent to a brain-like AI node. On the right, a terminal interface showing step-by-step process: User query, Tool detection, Local Java execution, and final AI output. Clean vector style, flat modern design with purple and teal lines, dark blue background, technical presentation slide. The visual language is Vietnamese, with only technical terms retained in English.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab: Practice -->
+            <div class="tab-pane" id="s4_l2_pane_practice">
+              <div class="practice-container">
+                <div class="code-block-header">
+                  <span class="file-name">CurrencyExchangeService.java</span>
+                  <button class="copy-btn" onclick="copyCode(this, 's4_l2_c1')"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <div class="code-wrapper">
+                  <pre><code class="language-java" id="s4_l2_c1">package com.ai.function_calling.service;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
+import java.util.function.Function;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Description;
+
+@Configuration
+public class CurrencyExchangeService {
+
+    // 1. Định nghĩa DTO Request
+    public record Request(
+        @JsonProperty(required = true)
+        @JsonPropertyDescription("Số tiền cần quy đổi, ví dụ: 100")
+        double amount,
+        
+        @JsonProperty(required = true)
+        @JsonPropertyDescription("Mã tiền tệ gốc, ví dụ: USD, EUR")
+        String from,
+        
+        @JsonProperty(required = true)
+        @JsonPropertyDescription("Mã tiền tệ đích cần chuyển đổi, ví dụ: VND")
+        String to
+    ) {}
+
+    // 2. Định nghĩa DTO Response
+    public record Response(String result) {}
+
+    // 3. Đăng ký Function Bean
+    @Bean
+    @Description("Quy đổi tiền tệ giữa các quốc gia dựa trên tỷ giá mới nhất")
+    public Function<Request, Response> exchangeCurrency() {
+        return request -> {
+            double rate = 1.0;
+            if ("USD".equalsIgnoreCase(request.from()) && "VND".equalsIgnoreCase(request.to())) {
+                rate = 25400.0;
+            }
+            double finalAmount = request.amount() * rate;
+            return new Response(String.format("%,.0f %s", finalAmount, request.to()));
+        };
+    }
+}</code></pre>
+                </div>
+
+                <!-- Simulator Widget -->
+                <div class="testing-lab-card" id="s4_l2_simulator">
+                  <div class="testing-lab-title">
+                    <i class="fas fa-terminal"></i> <span class="sim-title-text">Simulator: Function Calling Mechanics</span>
+                  </div>
+                  <div class="sim-grid">
+                    <div class="sim-visualizer">
+                      <svg class="sim-svg-connections">
+                        <path id="path-user-spring" class="sim-connection-path" d="M 60,215 L 175,215" />
+                        <path id="path-spring-llm" class="sim-connection-path" d="M 190,190 L 320,95" />
+                      </svg>
+                      
+                      <div class="sim-node node-user" data-node="user">
+                        <i class="fas fa-user-circle fa-2x"></i><br/>User Client
+                      </div>
+                      <div class="sim-node node-spring" data-node="spring">
+                        <i class="fab fa-envira fa-2x"></i><br/>Spring Boot Client
+                      </div>
+                      <div class="sim-node node-llm" data-node="llm">
+                        <i class="fas fa-brain fa-2x"></i><br/>LLM Model
+                      </div>
+
+                      <div class="sim-packet"></div>
+                    </div>
+
+                    <div class="sim-interface">
+                      <div class="sim-interface-header">
+                        <span class="sim-title"><i class="fas fa-play-circle"></i> Trình mô phỏng luồng chạy</span>
+                        <span class="sim-status active"><span class="sim-status-dot"></span> Đang chờ lệnh</span>
+                      </div>
+                      <div class="sim-scenarios">
+                        <span class="scenario-label">Chọn kịch bản</span>
+                        <select class="scenario-select"></select>
+                      </div>
+                      <div class="sim-chat-area"></div>
+                      <div class="sim-input-area">
+                        <input type="text" class="sim-input" placeholder="Mô phỏng đầu vào..." readonly>
+                        <button class="sim-send-btn"><i class="fas fa-play"></i> RUN</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab: Video Prompt -->
+            <div class="tab-pane" id="s4_l2_pane_video">
+              <div class="prompt-container">
+                <div class="prompt-box">
+                  <div class="card-title"><i class="fas fa-film"></i> NotebookLM Video Prompt</div>
+                  <div class="prompt-text" id="s4_l2_video_text">=== STYLE PROMPT ===
+Giọng thuyết trình: Hào hứng, nhấn mạnh tính năng mang tính bước ngoặt, phong cách giải thích kỹ sư hệ thống.
+Ngôn ngữ: Tiếng Việt, giữ các từ kỹ thuật (Function Calling, JSON Schema, Functional Interface, Jackson, Bean).
+
+=== NỘI DUNG AUDIO ===
+[00:00] Hook: "LLM rất thông minh nhưng nó không biết hôm nay thời tiết thế nào hoặc tỷ giá USD/VND hiện tại là bao nhiêu. Làm thế nào để giải quyết? Hãy cùng làm quen với ma thuật mang tên Function Calling."
+[02:30] Cơ chế cốt lõi: "Hãy nhớ rằng LLM không trực tiếp chạy code Java của bạn. Nó chỉ phân tích câu hỏi, nhận dạng các tham số và trả về chỉ thị dưới dạng JSON để Spring Boot chạy cục bộ."
+[05:00] Viết Code: [Phân tích CurrencyExchangeService.java] "Bằng cách sử dụng Functional Interface Function và thêm các mô tả rõ ràng qua @JsonPropertyDescription. Spring AI sẽ tự động sinh Schema đặc tả gửi đi."
+[08:00] Kết luận: "Function Calling biến AI từ một trợ lý chat đơn thuần thành một động cơ có thể thực thi nghiệp vụ hệ thống. Tiếp theo, chúng ta sẽ xem cách viết tối ưu hơn với annotation @Tool."</div>
+                  <button class="copy-btn" onclick="copyCode(this, 's4_l2_video_text')"><i class="fas fa-copy"></i> Sao chép Prompt</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab: Slides Prompt -->
+            <div class="tab-pane" id="s4_l2_pane_slide">
+              <div class="prompt-container">
+                <div class="prompt-box">
+                  <div class="card-title"><i class="fas fa-file-powerpoint"></i> Google Slides Prompt</div>
+                  <div class="prompt-text" id="s4_l2_slide_text">=== PHONG CÁCH TỔNG THỂ ===
+Theme: Tech Minimalist. Nền: Đen tối giản. Font: Space Grotesk. Màu nhấn: Xanh ngọc (#06b6d4).
+
+=== SLIDES ===
+Slide 1: Tiêu đề lớn: "Cơ chế hoạt động của Function Calling trong Spring AI"
+Slide 2: Giới hạn của LLM: Vấn đề dữ liệu thời gian thực và ảo tưởng thông tin.
+Slide 3: Khái niệm Function Calling: Định nghĩa và phân biệt quyền thực thi.
+Slide 4: Sơ đồ luồng dữ liệu 6 bước từ User -> Spring Boot Server -> LLM -> Java Code.
+Slide 5: Tầm quan trọng của JSON Schema đặc tả: Cách LLM đọc mô tả để hiểu tham số.
+Slide 6: Triển khai Functional Interface của Java (`java.util.function.Function`).
+Slide 7: Ứng dụng Jackson DTOs và annotation `@JsonPropertyDescription`.
+Slide 8: Cách đăng ký Function Bean và thiết lập `@Description` trên Bean.
+Slide 9: Cách cấu hình kích hoạt Tool tự động hoặc chỉ định thủ công trong Prompt.
+Slide 10: Tóm tắt bài học và chuẩn bị sang Lesson 03: Đóng gói với Annotation `@Tool`.</div>
+                  <button class="copy-btn" onclick="copyCode(this, 's4_l2_slide_text')"><i class="fas fa-copy"></i> Sao chép Prompt</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== SESSION 04 LESSON 03 ==================== -->
+        <section class="lesson-section" id="s4_l3">
+          <div class="lesson-banner">
+            <div class="lesson-subtitle">LESSON 03</div>
+            <h2 class="lesson-title">Đóng gói Spring Boot Service thành Tool</h2>
+          </div>
+
+          <div class="tab-container">
+            <div class="tab-nav">
+              <button class="tab-btn active" data-tab="theory"><i class="fas fa-book"></i> Lý thuyết</button>
+              <button class="tab-btn" data-tab="diagram"><i class="fas fa-project-diagram"></i> Sơ đồ & Minh họa</button>
+              <button class="tab-btn" data-tab="practice"><i class="fas fa-laptop-code"></i> Thực hành & Demo</button>
+              <button class="tab-btn" data-tab="video"><i class="fas fa-video"></i> Video Prompt</button>
+              <button class="tab-btn" data-tab="slide"><i class="fas fa-images"></i> Slides Prompt</button>
+            </div>
+
+            <!-- Tab: Theory -->
+            <div class="tab-pane active" id="s4_l3_pane_theory">
+              <div class="theory-content">
+                <h3>3.1 Khái niệm Tool trong Spring AI 1.1.5</h3>
+                <p>Trong các phiên bản Spring AI gần đây (1.1.5 trở đi), một cơ chế đóng gói mới đã được giới thiệu giúp đơn giản hóa việc chuyển đổi các Service hiện có thành công cụ cho AI, đó là sử dụng annotation <strong><code>@Tool</code></strong>.</p>
+                <p>Trước đây, chúng ta phải khai báo thủ công từng Bean <code>java.util.function.Function</code> gây rườm rà và khó tái sử dụng code. Với <code>@Tool</code>, ta có thể trực tiếp đánh dấu một method trong bất kỳ lớp <code>@Service</code> hoặc <code>@Component</code> nào.</p>
+
+                <h3>3.2 Ưu điểm nổi bật</h3>
+                <ul>
+                  <li><strong>Dễ tích hợp:</strong> Không cần cấu hình lại các method dưới dạng Functional Interface. Một Service thông thường có thể chứa nhiều Tool khác nhau.</li>
+                  <li><strong>Hỗ trợ `@ToolContext`:</strong> Cho phép truyền dữ liệu trạng thái ẩn hoặc thông tin bảo mật (như JWT token, User ID, Transaction ID) xuyên suốt quá trình gọi hàm của Agent mà LLM không được phép nhìn thấy hoặc làm thay đổi.</li>
+                  <li><strong>Tự động tạo Schema từ Javadoc:</strong> Spring AI có khả năng đọc Javadoc của phương thức để làm mô tả đặc tả cho LLM, giảm thiểu viết code thừa.</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Tab: Diagram & Illustration -->
+            <div class="tab-pane" id="s4_l3_pane_diagram">
+              <div class="diagram-visual-container">
+                <div class="card-container">
+                  <div class="card-title"><i class="fas fa-project-diagram"></i> Workflow Diagram (Mermaid)</div>
+                  <div class="mermaid-wrapper">
+                    <pre class="mermaid">
+graph TD
+    subgraph "Tầng Quét Linh Kiện (Component Scanning)"
+        A["@Service<br/>CustomerSupportService"] -->|"Quét các annotation"| B["Method: calculatePointsToUpgrade(...)<br/>@Tool(description = 'Tính điểm lên hạng')"]
+    end
+
+    subgraph "Cấu hình ChatClient"
+        C["ChatClient.builder(chatModel)<br/>.defaultTools(customerSupportService)<br/>.build()"]
+    end
+
+    B -->|"Tự động đăng ký làm Tool"| C
+    C -->|"1. Đọc tên hàm & kiểu dữ liệu<br/>2. Tạo JSON Schema"| D["Đặc tả gửi đến LLM"]
+
+    style A fill:#1e293b,color:#fff,stroke:#64748b
+    style B fill:#15803d,color:#fff,stroke:#22c55e
+    style C fill:#4f46e5,color:#fff,stroke:#818cf8
+    style D fill:#b45309,color:#fff,stroke:#f59e0b
+                    </pre>
+                  </div>
+                </div>
+
+                <div class="card-container">
+                  <div class="card-title"><i class="fas fa-image"></i> Ảnh minh họa 3D Illustration</div>
+                  <div class="illustration-wrapper">
+                    <img class="illustration-img" src="images/s4_l3.png" alt="Bootstrapping Spring Services as Tools">
+                  </div>
+                  <div class="prompt-drawer">
+                    <div class="prompt-drawer-header">
+                      <span>DALL-E Prompt</span>
+                      <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="prompt-drawer-body" style="display: none;">
+                      A visual representation of Spring Boot services decorated with @Tool annotations being converted into modular tool blocks. Vibrant digital blocks representing "Service Methods" snap into a central engine labeled "Spring AI ChatClient". Lines of code with glowing neon annotations highlight @Tool and @Service keywords. Presentation slide graphics, blue and purple aesthetic, hyper-detailed clean tech styling, white background. The visual language is Vietnamese, with only technical terms retained in English.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab: Practice -->
+            <div class="tab-pane" id="s4_l3_pane_practice">
+              <div class="practice-container">
+                <div class="code-block-header">
+                  <span class="file-name">CustomerSupportService.java</span>
+                  <button class="copy-btn" onclick="copyCode(this, 's4_l3_c1')"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <div class="code-wrapper">
+                  <pre><code class="language-java" id="s4_l3_c1">package com.ai.function_calling.service;
+
+import org.springframework.ai.tool.annotation.Tool;
+import org.springframework.stereotype.Service;
+import lombok.extern.slf4j.Slf4j;
+import java.util.Map;
+
+@Slf4j
+@Service
+public class CustomerSupportService {
+
+    private final Map<String, String> customerDb = Map.of(
+        "C001", "Nguyễn Minh Chinh - Hạng: VIP - Điểm tích lũy: 1200",
+        "C002", "Trần Quốc Anh - Hạng: Gold - Điểm tích lũy: 450",
+        "C003", "Lê Thu Thảo - Hạng: Member - Điểm tích lũy: 50"
+    );
+
+    @Tool(description = "Tra cứu thông tin khách hàng (hạng và điểm tích lũy) bằng ID khách hàng")
+    public String getCustomerDetails(String customerId) {
+        log.info("🎯 Gọi Tool getCustomerDetails cho ID: {}", customerId);
+        return customerDb.getOrDefault(customerId, "Không tìm thấy thông tin");
+    }
+
+    @Tool(description = "Tính điểm tích lũy cần thiết để nâng hạng thành viên tiếp theo")
+    public String calculatePointsToUpgrade(String customerId) {
+        log.info("🎯 Gọi Tool calculatePointsToUpgrade cho ID: {}", customerId);
+        if (!customerDb.containsKey(customerId)) return "Không tìm thấy khách hàng";
+        
+        String info = customerDb.get(customerId);
+        if (info.contains("VIP")) {
+            return "Khách hàng đã đạt hạng cao nhất (VIP)";
+        } else if (info.contains("Gold")) {
+            return "Cần thêm 550 điểm để nâng lên hạng VIP";
+        } else {
+            return "Cần thêm 400 điểm để nâng lên hạng Gold";
+        }
+    }
+}</code></pre>
+                </div>
+
+                <div class="code-block-header">
+                  <span class="file-name">CustomerAgentService.java</span>
+                  <button class="copy-btn" onclick="copyCode(this, 's4_l3_c2')"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <div class="code-wrapper">
+                  <pre><code class="language-java" id="s4_l3_c2">package com.ai.function_calling.service;
+
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.stereotype.Service;
+
+@Service
+public class CustomerAgentService {
+
+    private final ChatClient chatClient;
+
+    public CustomerAgentService(ChatModel chatModel, CustomerSupportService customerService) {
+        this.chatClient = ChatClient.builder(chatModel)
+                .defaultSystem("Bạn là trợ lý chăm sóc khách hàng chuyên nghiệp. Hãy tra cứu và trả lời các câu hỏi về thành viên.")
+                .defaultTools(customerService) // Tự động quét và đăng ký các method @Tool
+                .build();
+    }
+
+    public String handleCustomerQuery(String query) {
+        return this.chatClient.prompt()
+                .user(query)
+                .call()
+                .content();
+    }
+}</code></pre>
+                </div>
+
+                <!-- Simulator Widget -->
+                <div class="testing-lab-card" id="s4_l3_simulator">
+                  <div class="testing-lab-title">
+                    <i class="fas fa-terminal"></i> <span class="sim-title-text">Simulator: Spring Service as @Tool Scan</span>
+                  </div>
+                  <div class="sim-grid">
+                    <div class="sim-visualizer">
+                      <svg class="sim-svg-connections">
+                        <path id="path-spring-llm" class="sim-connection-path" d="M 190,190 L 320,95" />
+                      </svg>
+                      
+                      <div class="sim-node node-spring" data-node="spring">
+                        <i class="fab fa-envira fa-2x"></i><br/>Spring Boot Client
+                      </div>
+                      <div class="sim-node node-llm" data-node="llm">
+                        <i class="fas fa-brain fa-2x"></i><br/>LLM Model
+                      </div>
+
+                      <div class="sim-packet"></div>
+                    </div>
+
+                    <div class="sim-interface">
+                      <div class="sim-interface-header">
+                        <span class="sim-title"><i class="fas fa-play-circle"></i> Trình mô phỏng luồng chạy</span>
+                        <span class="sim-status active"><span class="sim-status-dot"></span> Đang chờ lệnh</span>
+                      </div>
+                      <div class="sim-scenarios">
+                        <span class="scenario-label">Chọn kịch bản</span>
+                        <select class="scenario-select"></select>
+                      </div>
+                      <div class="sim-chat-area"></div>
+                      <div class="sim-input-area">
+                        <input type="text" class="sim-input" placeholder="Mô phỏng đầu vào..." readonly>
+                        <button class="sim-send-btn"><i class="fas fa-play"></i> RUN</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab: Video Prompt -->
+            <div class="tab-pane" id="s4_l3_pane_video">
+              <div class="prompt-container">
+                <div class="prompt-box">
+                  <div class="card-title"><i class="fas fa-film"></i> NotebookLM Video Prompt</div>
+                  <div class="prompt-text" id="s4_l3_video_text">=== STYLE PROMPT ===
+Giọng thuyết trình: Tự tin, hướng dẫn thực tế, phong cách giải quyết vấn đề hiệu quả.
+Ngôn ngữ: Tiếng Việt, giữ các thuật ngữ (Annotation, Tool, @Tool, Service, defaultTools, ChatClient).
+
+=== NỘI DUNG AUDIO ===
+[00:00] Hook: "Khai báo hàng chục Functional Interface rườm rà cho mỗi công cụ AI làm dự án của bạn quá phức tạp? Hôm nay chúng ta sẽ tìm hiểu về annotation @Tool giúp biến bất kỳ method Java nào thành công cụ AI trong nháy mắt."
+[02:30] Sự cải tiến vượt bậc: "Thay vì viết Interface phức tạp chỉ nhận một tham số. Với @Tool, bạn viết code như một method Java bình thường, nhận nhiều tham số, và Spring AI tự động ánh xạ dữ liệu."
+[05:30] Phân tích code: [Xem CustomerSupportService và cách đăng ký trong ChatClient] "Rân giản, chỉ cần truyền instance của Service vào method defaultTools của ChatClient. Spring AI tự quét các method đánh dấu @Tool và tạo đặc tả JSON."
+[08:00] Kết luận: "Sử dụng @Tool giúp dự án Spring Boot của bạn sạch sẽ, dễ bảo trì và mở rộng hơn. Sẵn sàng cho bài học thực chiến xây dựng Agent đa công cụ tiếp theo."</div>
+                  <button class="copy-btn" onclick="copyCode(this, 's4_l3_video_text')"><i class="fas fa-copy"></i> Sao chép Prompt</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab: Slides Prompt -->
+            <div class="tab-pane" id="s4_l3_pane_slide">
+              <div class="prompt-container">
+                <div class="prompt-box">
+                  <div class="card-title"><i class="fas fa-file-powerpoint"></i> Google Slides Prompt</div>
+                  <div class="prompt-text" id="s4_l3_slide_text">=== PHONG CÁCH TỔNG THỂ ===
+Theme: Developer Dark. Nền: Xám đậm (#0f172a). Font: JetBrains Mono và Inter. Màu nhấn: Emerald Green (#10b981).
+
+=== SLIDES ===
+Slide 1: Tiêu đề lớn: "Đóng gói Spring Boot Service thành AI Tool bằng @Tool"
+Slide 2: Hạn chế của phương pháp cũ: Rườm rà, khó tái sử dụng, giới hạn 1 tham số.
+Slide 3: Giới thiệu Annotation `@Tool` trong Spring AI 1.1.x.
+Slide 4: Các tham số quan trọng trong `@Tool` (tên, mô tả mặc định).
+Slide 5: Lợi ích của `@ToolContext`: Truyền dữ liệu ẩn bảo mật.
+Slide 6: Đăng ký Tool vào `ChatClient` thông qua cấu hình `.defaultTools(serviceInstance)`.
+Slide 7: Mã nguồn mẫu: Viết lớp Service chứa các phương thức nghiệp vụ.
+Slide 8: Mã nguồn mẫu: Đăng ký Service vào ChatClient của Controller.
+Slide 9: Cơ chế tự sinh JSON Schema tự động từ signatures của phương thức.
+Slide 10: Tóm tắt bài học và chuẩn bị cho dự án thực hành Multi-Tool Booking Agent.</div>
+                  <button class="copy-btn" onclick="copyCode(this, 's4_l3_slide_text')"><i class="fas fa-copy"></i> Sao chép Prompt</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== SESSION 04 LESSON 04 ==================== -->
+        <section class="lesson-section" id="s4_l4">
+          <div class="lesson-banner">
+            <div class="lesson-subtitle">LESSON 04</div>
+            <h2 class="lesson-title">AI Booking Agent thực chiến (Multi-Tool)</h2>
+          </div>
+
+          <div class="tab-container">
+            <div class="tab-nav">
+              <button class="tab-btn active" data-tab="theory"><i class="fas fa-book"></i> Lý thuyết</button>
+              <button class="tab-btn" data-tab="diagram"><i class="fas fa-project-diagram"></i> Sơ đồ & Minh họa</button>
+              <button class="tab-btn" data-tab="practice"><i class="fas fa-laptop-code"></i> Thực hành & Demo</button>
+              <button class="tab-btn" data-tab="video"><i class="fas fa-video"></i> Video Prompt</button>
+              <button class="tab-btn" data-tab="slide"><i class="fas fa-images"></i> Slides Prompt</button>
+            </div>
+
+            <!-- Tab: Theory -->
+            <div class="tab-pane active" id="s4_l4_pane_theory">
+              <div class="theory-content">
+                <h3>4.1 Khái niệm Đa công cụ (Multi-Tool Agent)</h3>
+                <p>Trong thực tiễn, một yêu cầu của khách hàng thường phức tạp và không thể xử lý bằng một công cụ đơn lẻ. Agent cần phải tự động lên kế hoạch và liên kết chuỗi các công cụ khác nhau để hoàn thành nhiệm vụ.</p>
+                <div class="info-card">
+                  <div class="info-card-title"><i class="fas fa-stream"></i> Chuỗi cuộc gọi của Booking Agent</div>
+                  <p><strong>Bước 1:</strong> getRoomAvailability (Kiểm tra xem còn phòng trống loại Deluxe hay không).</p>
+                  <p><strong>Bước 2:</strong> calculateTotalPrice (Tính toán tổng số tiền dựa trên số đêm khách ở).</p>
+                  <p><strong>Bước 3:</strong> createBooking (Sau khi khách xác nhận giá, tiến hành tạo bản ghi đặt chỗ trong Database).</p>
+                </div>
+
+                <h3>4.2 Chat Memory kết hợp Tool Calling</h3>
+                <p>Để Agent hoạt động trơn tru trong cuộc đối thoại dài, nó cần sự phối hợp giữa <strong>Chat Memory</strong> (nhớ tên khách, loại phòng, số đêm khách cung cấp ở các câu trước) và <strong>Tool Calling</strong> (thực thi API kiểm tra và đặt dữ liệu thật).</p>
+                <p>Nếu thiếu một trong hai, AI sẽ hoạt động không chính xác (hỏi lại thông tin cũ hoặc không có dữ liệu thực tế tại thời điểm chạy).</p>
+              </div>
+            </div>
+
+            <!-- Tab: Diagram & Illustration -->
+            <div class="tab-pane" id="s4_l4_pane_diagram">
+              <div class="diagram-visual-container">
+                <div class="card-container">
+                  <div class="card-title"><i class="fas fa-project-diagram"></i> Workflow Diagram (Mermaid)</div>
+                  <div class="mermaid-wrapper">
+                    <pre class="mermaid">
+sequenceDiagram
+    autonumber
+    actor User as 👤 Khách hàng
+    participant Agent as 🤖 AI Agent (ChatClient)
+    participant DB as 💾 Database (Spring Service)
+
+    User->>Agent: "Tôi muốn đặt phòng Deluxe 2 đêm"
+    Note over Agent: Chat Memory lưu ý định:<br/>- Loại phòng: Deluxe<br/>- Số đêm: 2
+    Agent->>DB: Gọi Tool checkRoomAvailability("Deluxe")
+    DB-->>Agent: Trả về: "Deluxe còn trống 3 phòng"
+    Agent->>DB: Gọi Tool calculateTotalPrice("Deluxe", 2)
+    DB-->>Agent: Trả về: "Tổng giá tiền: 3,000,000 VND"
+    Agent-->>User: "Phòng Deluxe còn trống. Tổng chi phí là 3M VND. Bạn có đồng ý đặt không?"
+    User->>Agent: "Ok tôi đồng ý, tên tôi là Minh Chinh"
+    Agent->>DB: Gọi Tool createBooking("Minh Chinh", "Deluxe", 2)
+    DB-->>Agent: Trả về: "Đặt phòng thành công, mã đặt chỗ: BK-9921"
+    Agent-->>User: "Cảm ơn anh Chinh! Mã đặt chỗ của anh là BK-9921."
+                    </pre>
+                  </div>
+                </div>
+
+                <div class="card-container">
+                  <div class="card-title"><i class="fas fa-image"></i> Ảnh minh họa 3D Illustration</div>
+                  <div class="illustration-wrapper">
+                    <img class="illustration-img" src="images/s4_l4.png" alt="Hotel AI Booking Agent">
+                  </div>
+                  <div class="prompt-drawer">
+                    <div class="prompt-drawer-header">
+                      <span>DALL-E Prompt</span>
+                      <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="prompt-drawer-body" style="display: none;">
+                      A visual representation of an AI Booking Agent process. A digital hotel reception desk where a futuristic hologram receptionist (AI) is assisting a guest. Wireframe icons of database queries (checking rooms, calculating costs, inserting booking records) float around the desk. Modern flat design, gradient color transitions, neon accents, dark mode tech aesthetic, detailed infographic layout. The visual language is Vietnamese, with only technical terms retained in English.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab: Practice -->
+            <div class="tab-pane" id="s4_l4_pane_practice">
+              <div class="practice-container">
+                <div class="code-block-header">
+                  <span class="file-name">HotelBookingService.java</span>
+                  <button class="copy-btn" onclick="copyCode(this, 's4_l4_c1')"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <div class="code-wrapper">
+                  <pre><code class="language-java" id="s4_l4_c1">package com.ai.function_calling.service;
+
+import org.springframework.ai.tool.annotation.Tool;
+import org.springframework.stereotype.Service;
+import lombok.extern.slf4j.Slf4j;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.UUID;
+
+@Slf4j
+@Service
+public class HotelBookingService {
+
+    private final ConcurrentHashMap<String, String> bookings = new ConcurrentHashMap<>();
+
+    @Tool(description = "Kiểm tra phòng trống của một loại phòng cụ thể (STANDARD, DELUXE, SUITE)")
+    public String checkRoomAvailability(String roomType) {
+        log.info("🎯 Gọi Tool checkRoomAvailability cho: {}", roomType);
+        return "Phòng loại " + roomType.toUpperCase() + " còn trống 3 phòng.";
+    }
+
+    @Tool(description = "Tính tổng tiền đặt phòng dựa vào loại phòng và số đêm lưu trú")
+    public String calculateTotalPrice(String roomType, int nights) {
+        log.info("🎯 Gọi Tool calculateTotalPrice cho: {}, số đêm: {}", roomType, nights);
+        double pricePerNight = 1000000.0;
+        if ("DELUXE".equalsIgnoreCase(roomType)) pricePerNight = 1500000.0;
+        if ("SUITE".equalsIgnoreCase(roomType)) pricePerNight = 3000000.0;
+        
+        double total = pricePerNight * nights;
+        return String.format("Tổng tiền đặt phòng: %,.0f VND", total);
+    }
+
+    @Tool(description = "Thực hiện đặt phòng chính thức sau khi khách xác nhận thông tin")
+    public String createBooking(String customerName, String roomType, int nights) {
+        log.info("🎯 Gọi Tool createBooking cho: {}, phòng: {}", customerName, roomType);
+        String bookingId = "BK-" + UUID.randomUUID().toString().substring(0, 4).toUpperCase();
+        bookings.put(bookingId, customerName + " - " + roomType + " - " + nights + " đêm");
+        return "Đặt phòng thành công! Mã đặt phòng của bạn là: " + bookingId;
+      }
+}</code></pre>
+                </div>
+
+                <div class="code-block-header">
+                  <span class="file-name">HotelAgentService.java</span>
+                  <button class="copy-btn" onclick="copyCode(this, 's4_l4_c2')"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <div class="code-wrapper">
+                  <pre><code class="language-java" id="s4_l4_c2">package com.ai.function_calling.service;
+
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
+import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.chat.memory.ChatMemoryRepository;
+import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.stereotype.Service;
+
+@Service
+public class HotelAgentService {
+
+    private final ChatClient chatClient;
+
+    public HotelAgentService(ChatModel chatModel, ChatMemoryRepository memoryRepo, HotelBookingService bookingService) {
+        this.chatClient = ChatClient.builder(chatModel)
+                .defaultSystem("""
+                    Bạn là Trợ lý ảo đặt phòng tại khách sạn Rikkei Luxury Hotel.
+                    Nhiệm vụ của bạn là kiểm tra thông tin phòng trống và hoàn tất việc đặt phòng.
+                    Quy trình:
+                    1. Kiểm tra phòng trống bằng checkRoomAvailability.
+                    2. Tính giá tiền bằng calculateTotalPrice.
+                    3. Yêu cầu tên khách hàng và xác nhận trước khi gọi createBooking.
+                    """)
+                .defaultAdvisors(new MessageChatMemoryAdvisor(memoryRepo))
+                .defaultTools(bookingService) // Đăng ký bộ 3 công cụ liên kết
+                .build();
+    }
+
+    public String chat(String chatId, String message) {
+        return this.chatClient.prompt()
+                .user(message)
+                .advisors(spec -> spec.param(ChatMemory.CONVERSATION_ID, chatId))
+                .call()
+                .content();
+    }
+}</code></pre>
+                </div>
+
+                <!-- Simulator Widget -->
+                <div class="testing-lab-card" id="s4_l4_simulator">
+                  <div class="testing-lab-title">
+                    <i class="fas fa-terminal"></i> <span class="sim-title-text">Simulator: Multi-Tool Booking Agent</span>
+                  </div>
+                  <div class="sim-grid">
+                    <div class="sim-visualizer">
+                      <svg class="sim-svg-connections">
+                        <path id="path-user-spring" class="sim-connection-path" d="M 60,215 L 175,215" />
+                        <path id="path-spring-db" class="sim-connection-path" d="M 190,250 L 320,350" />
+                        <path id="path-spring-llm" class="sim-connection-path" d="M 190,190 L 320,95" />
+                      </svg>
+                      
+                      <div class="sim-node node-user" data-node="user">
+                        <i class="fas fa-user-circle fa-2x"></i><br/>User Client
+                      </div>
+                      <div class="sim-node node-spring" data-node="spring">
+                        <i class="fab fa-envira fa-2x"></i><br/>Spring Boot Client
+                      </div>
+                      <div class="sim-node node-llm" data-node="llm">
+                        <i class="fas fa-brain fa-2x"></i><br/>LLM Model
+                      </div>
+                      <div class="sim-node node-db" data-node="db">
+                        <i class="fas fa-database fa-2x"></i><br/>Spring DB Service
+                      </div>
+
+                      <div class="sim-packet"></div>
+                    </div>
+
+                    <div class="sim-interface">
+                      <div class="sim-interface-header">
+                        <span class="sim-title"><i class="fas fa-play-circle"></i> Trình mô phỏng luồng chạy</span>
+                        <span class="sim-status active"><span class="sim-status-dot"></span> Đang chờ lệnh</span>
+                      </div>
+                      <div class="sim-scenarios">
+                        <span class="scenario-label">Chọn kịch bản</span>
+                        <select class="scenario-select"></select>
+                      </div>
+                      <div class="sim-chat-area"></div>
+                      <div class="sim-input-area">
+                        <input type="text" class="sim-input" placeholder="Mô phỏng đầu vào..." readonly>
+                        <button class="sim-send-btn"><i class="fas fa-play"></i> RUN</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab: Video Prompt -->
+            <div class="tab-pane" id="s4_l4_pane_video">
+              <div class="prompt-container">
+                <div class="prompt-box">
+                  <div class="card-title"><i class="fas fa-film"></i> NotebookLM Video Prompt</div>
+                  <div class="prompt-text" id="s4_l4_video_text">=== STYLE PROMPT ===
+Giọng thuyết trình: Sinh động, thực tế, tạo hứng thú cho học viên, giọng chuyên nghiệp.
+Ngôn ngữ: Tiếng Việt, giữ các thuật ngữ (Multi-Tool, Spring Boot, ConcurrentHashMap, UUID, defaultTools, ChatClient).
+
+=== NỘI DUNG AUDIO ===
+[00:00] Hook: "Bạn đã bao giờ tự hỏi làm cách nào một AI Agent có thể tự động lập kế hoạch và kết hợp nhiều công cụ như kiểm tra phòng, tính tiền và ghi vào DB chỉ trong một lượt chat? Chào mừng đến với bài thực hành Booking Agent."
+[02:30] Phân tích thiết kế Tool: "Chúng ta định nghĩa 3 phương thức nghiệp vụ checkRoomAvailability, calculateTotalPrice và createBooking trong một Service duy nhất và đăng ký tất cả vào ChatClient."
+[05:30] Phối hợp Memory & Tool: "Nhờ có ChatMemory, Agent nhớ được loại phòng và số đêm người dùng đã nhập trước đó để làm tham số cho cuộc gọi tạo đơn đặt phòng ở lượt chat tiếp theo."
+[08:30] Demo và Kiểm thử: [Chạy thử curl đặt phòng Deluxe] "Khi gửi request, Agent tuần tự kích hoạt các tool, tính toán và lưu đơn phòng thành công vào database. Hệ thống tự động vận hành hoàn hảo."
+[11:00] Kết luận: "Chúc mừng bạn đã làm chủ kiến trúc AI Agent trong Spring Boot. Hãy cùng chuẩn bị bước sang Session 05 về Vector Database và RAG."</div>
+                  <button class="copy-btn" onclick="copyCode(this, 's4_l4_video_text')"><i class="fas fa-copy"></i> Sao chép Prompt</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab: Slides Prompt -->
+            <div class="tab-pane" id="s4_l4_pane_slide">
+              <div class="prompt-container">
+                <div class="prompt-box">
+                  <div class="card-title"><i class="fas fa-file-powerpoint"></i> Google Slides Prompt</div>
+                  <div class="prompt-text" id="s4_l4_slide_text">=== PHONG CÁCH TỔNG THỂ ===
+Theme: Modern Developer. Nền: Xanh thẫm (#0b0f19). Font: Space Grotesk. Màu nhấn: Tím nhạt (#c084fc).
+
+=== SLIDES ===
+Slide 1: Tiêu đề lớn: "Xây dựng Multi-Tool AI Booking Agent hoàn chỉnh"
+Slide 2: Đặt vấn đề: Sự phức tạp của một giao dịch thực tế đòi hỏi nhiều công cụ.
+Slide 3: Thiết kế cấu trúc hệ thống: Sơ đồ tương tác giữa các Service và Database.
+Slide 4: Định nghĩa 3 nghiệp vụ con trong `HotelBookingService`.
+Slide 5: Đăng ký đa công cụ qua `.defaultTools()` của ChatClient.
+Slide 6: Sự kết hợp hoàn hảo giữa Chat Memory và Tool Calling.
+Slide 7: Viết Controller xử lý cuộc gọi hội thoại có duy trì Session ID.
+Slide 8: Lab kiểm thử: Sử dụng Curl để kiểm nghiệm luồng hoạt động.
+Slide 9: Xử lý ngoại lệ và tính Idempotency trong giao dịch AI.
+Slide 10: Tổng kết chương và định hướng ứng dụng AI Agent vào doanh nghiệp.</div>
+                  <button class="copy-btn" onclick="copyCode(this, 's4_l4_slide_text')"><i class="fas fa-copy"></i> Sao chép Prompt</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== SESSION 05 LESSON 01 ==================== -->
+        <section class="lesson-section" id="s5_l1">
+          <div class="lesson-banner">
+            <div class="lesson-subtitle">LESSON 01</div>
+            <h2 class="lesson-title">Embeddings (Vector hóa văn bản)</h2>
+          </div>
+
+          <div class="tab-container">
+            <div class="tab-nav">
+              <button class="tab-btn active" data-tab="theory"><i class="fas fa-book"></i> Lý thuyết</button>
+              <button class="tab-btn" data-tab="diagram"><i class="fas fa-project-diagram"></i> Sơ đồ & Minh họa</button>
+              <button class="tab-btn" data-tab="practice"><i class="fas fa-laptop-code"></i> Thực hành & Demo</button>
+              <button class="tab-btn" data-tab="video"><i class="fas fa-video"></i> Video Prompt</button>
+              <button class="tab-btn" data-tab="slide"><i class="fas fa-images"></i> Slides Prompt</button>
+            </div>
+
+            <!-- Tab: Theory -->
+            <div class="tab-pane active" id="s5_l1_pane_theory">
+              <div class="theory-content">
+                <h3>1.1 Embeddings là gì?</h3>
+                <p>Trong thế giới của học máy và LLM, máy tính không thể hiểu trực tiếp các từ ngữ hoặc văn bản theo cách của con người. Để xử lý, chúng ta cần số hóa văn bản thành các chuỗi số thực có độ dài cố định, được gọi là <strong>Vector Embeddings</strong>.</p>
+                <p>Một <strong>Embedding Vector</strong> đại diện cho <strong>ngữ nghĩa</strong> của văn bản chứ không phải là các ký tự thô:</p>
+                <ul>
+                  <li>Các văn bản có nội dung/ngữ nghĩa tương tự nhau (ví dụ: *"Hôm nay trời mưa to"* và *"Thời tiết ẩm ướt do mưa lớn"*) sẽ có các vector nằm rất gần nhau trong không gian đa chiều.</li>
+                  <li>Các văn bản có nghĩa khác biệt hoàn toàn (ví dụ: *"Báo cáo tài chính quý 1"* và *"Cách nấu phở bò"*) sẽ nằm rất xa nhau.</li>
+                </ul>
+                <div class="info-card">
+                  <div class="info-card-title"><i class="fas fa-compass"></i> Số chiều Vector (Dimensions)</div>
+                  <p>Mỗi mô hình embedding sẽ cho ra vector có số chiều cố định:</p>
+                  <p>- OpenAI <code>text-embedding-3-small</code>: 1536 chiều.</p>
+                  <p>- Google Gemini <code>text-embedding-004</code>: 768 chiều.</p>
+                  <p>- Ollama <code>nomic-embed-text</code> (Local): 768 chiều.</p>
+                </div>
+
+                <h3>1.2 Keyword Search vs. Semantic Search</h3>
+                <div class="compare-table-wrapper">
+                  <table class="compare-table">
+                    <thead>
+                      <tr>
+                        <th>Đặc điểm</th>
+                        <th>Keyword Search (LIKE, BM25)</th>
+                        <th>Semantic Search (Vector Embeddings)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>Cơ chế</strong></td>
+                        <td>Tìm kiếm chính xác ký tự trùng khớp (Exact match).</td>
+                        <td>Tìm kiếm dựa trên ý nghĩa ngữ cảnh và khái niệm.</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Xử lý từ đồng nghĩa</strong></td>
+                        <td>Kém. Tìm "điện thoại" sẽ bỏ sót "smartphone".</td>
+                        <td>Tốt. Hiểu rằng chúng biểu diễn cùng một khái niệm.</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Sai chính tả</strong></td>
+                        <td>Rất khó khăn, cần các cấu hình fuzzy phức tạp.</td>
+                        <td>Khá tốt do ngữ cảnh chung của câu vẫn giữ lại được.</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Chi phí tính toán</strong></td>
+                        <td>Thấp, dễ dàng đánh chỉ mục (Index B-Tree).</td>
+                        <td>Cao hơn do cần tính toán khoảng cách vector đa chiều.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab: Diagram & Illustration -->
+            <div class="tab-pane" id="s5_l1_pane_diagram">
+              <div class="diagram-visual-container">
+                <div class="card-container">
+                  <div class="card-title"><i class="fas fa-project-diagram"></i> Workflow Diagram (Mermaid)</div>
+                  <div class="mermaid-wrapper">
+                    <pre class="mermaid">
+sequenceDiagram
+    autonumber
+    actor User as 👤 Client (Browser)
+    participant App as 💻 Spring Boot (Spring AI)
+    participant Model as ☁️ Embedding Model (Gemini/OpenAI)
+    
+    User->>App: Gửi văn bản cần vector hóa ("Rikkei Education")
+    App->>Model: Gọi API EmbeddingModel.embed(Document)
+    Model-->>App: Trả về đối tượng Embedding (chứa vector [0.012, -0.098, ...])
+    App->>App: Trích xuất mảng float[] vector từ kết quả
+    App-->>User: Trả về danh sách tọa độ vector cho client
+                    </pre>
+                  </div>
+                </div>
+
+                <div class="card-container">
+                  <div class="card-title"><i class="fas fa-image"></i> Ảnh minh họa 3D Illustration</div>
+                  <div class="illustration-wrapper">
+                    <img class="illustration-img" src="images/s5_l1.png" alt="Text Vectorization and Embeddings">
+                  </div>
+                  <div class="prompt-drawer">
+                    <div class="prompt-drawer-header">
+                      <span>DALL-E Prompt</span>
+                      <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="prompt-drawer-body" style="display: none;">
+                      An abstract 3D digital visualization of a text vectorization process. On the left, floating holographic letters and sentences converge into a glowing funnel representing a neural network encoder. Emerging from the right side of the funnel is a perfectly straight, glowing laser beam made of thousands of tiny coordinates and floating decimal numbers, mapping onto a multi-dimensional spatial grid (coordinate axes). Futuristic tech aesthetic, dark navy background with neon blue and purple grid lines, volumetric light rays, 8k resolution, crisp detail. The visual language is Vietnamese, with only technical terms retained in English.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab: Practice -->
+            <div class="tab-pane" id="s5_l1_pane_practice">
+              <div class="practice-container">
+                <div class="code-block-header">
+                  <span class="file-name">EmbeddingService.java</span>
+                  <button class="copy-btn" onclick="copyCode(this, 's5_l1_c1')"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <div class="code-wrapper">
+                  <pre><code class="language-java" id="s5_l1_c1">package com.ai.vector_rag.service;
+
+import org.springframework.ai.embedding.EmbeddingModel;
+import org.springframework.stereotype.Service;
+
+@Service
+public class EmbeddingService {
+
+    private final EmbeddingModel embeddingModel;
+
+    // Spring AI tự động cấu hình và tiêm Bean EmbeddingModel dựa trên starter trong POM/Gradle
+    public EmbeddingService(EmbeddingModel embeddingModel) {
+        this.embeddingModel = embeddingModel;
+    }
+
+    public float[] getEmbedding(String text) {
+        return this.embeddingModel.embed(text);
+    }
+}</code></pre>
+                </div>
+
+                <!-- Simulator Widget -->
+                <div class="testing-lab-card" id="s5_l1_simulator">
+                  <div class="testing-lab-title">
+                    <i class="fas fa-terminal"></i> <span class="sim-title-text">Simulator: Text Vectorization</span>
+                  </div>
+                  <div class="sim-grid">
+                    <div class="sim-visualizer">
+                      <svg class="sim-svg-connections">
+                        <path id="path-spring-llm" class="sim-connection-path" d="M 190,190 L 320,95" />
+                      </svg>
+                      
+                      <div class="sim-node node-spring" data-node="spring">
+                        <i class="fab fa-envira fa-2x"></i><br/>Spring Boot Client
+                      </div>
+                      <div class="sim-node node-llm" data-node="llm">
+                        <i class="fas fa-brain fa-2x"></i><br/>Embedding Model
+                      </div>
+
+                      <div class="sim-packet"></div>
+                    </div>
+
+                    <div class="sim-interface">
+                      <div class="sim-interface-header">
+                        <span class="sim-title"><i class="fas fa-play-circle"></i> Trình mô phỏng luồng chạy</span>
+                        <span class="sim-status active"><span class="sim-status-dot"></span> Đang chờ lệnh</span>
+                      </div>
+                      <div class="sim-scenarios">
+                        <span class="scenario-label">Chọn kịch bản</span>
+                        <select class="scenario-select"></select>
+                      </div>
+                      <div class="sim-chat-area"></div>
+                      <div class="sim-input-area">
+                        <input type="text" class="sim-input" placeholder="Mô phỏng đầu vào..." readonly>
+                        <button class="sim-send-btn"><i class="fas fa-play"></i> RUN</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab: Video Prompt -->
+            <div class="tab-pane" id="s5_l1_pane_video">
+              <div class="prompt-container">
+                <div class="prompt-box">
+                  <div class="card-title"><i class="fas fa-film"></i> NotebookLM Video Prompt</div>
+                  <div class="prompt-text" id="s5_l1_video_text">=== STYLE PROMPT ===
+Giọng thuyết trình: Rõ ràng, dễ hiểu, phù hợp giải thích các khái niệm trừu tượng.
+Ngôn ngữ: Tiếng Việt, giữ các thuật ngữ (Vector Embeddings, Dimensions, Keyword Search, Semantic Search).
+
+=== NỘI DUNG AUDIO ===
+[00:00] Hook: "Máy tính xử lý ngôn ngữ tự nhiên như thế nào khi chúng chỉ hiểu các con số không và một? Câu trả lời chính là Vector Embeddings."
+[02:00] Bản chất Embeddings: "Mỗi từ hay văn bản sẽ được chuyển đổi thành một mảng số thực. Những từ có ý nghĩa tương đương sẽ nằm rất gần nhau trong không gian vector đa chiều."
+[05:00] So sánh tìm kiếm: "Khác với tìm kiếm từ khóa truyền thống chỉ tìm ký tự chính xác. Tìm kiếm ngữ nghĩa bằng vector giúp chatbot hiểu được ý đồ thật sự của người dùng, kể cả khi họ dùng từ đồng nghĩa hoặc viết sai chính tả."
+[08:00] Thực hành: [Phân tích Class EmbeddingService.java] "Nhờ Spring AI, việc vector hóa văn bản chỉ đơn giản là gọi hàm .embed() từ interface EmbeddingModel."
+[10:30] Kết luận: "Hiểu về vector là bước đệm quan trọng để xây dựng hệ thống tìm kiếm thông minh và RAG. Tiếp theo chúng ta sẽ tìm hiểu cách tính khoảng cách ngữ nghĩa giữa các vector."</div>
+                  <button class="copy-btn" onclick="copyCode(this, 's5_l1_video_text')"><i class="fas fa-copy"></i> Sao chép Prompt</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab: Slides Prompt -->
+            <div class="tab-pane" id="s5_l1_pane_slide">
+              <div class="prompt-container">
+                <div class="prompt-box">
+                  <div class="card-title"><i class="fas fa-file-powerpoint"></i> Google Slides Prompt</div>
+                  <div class="prompt-text" id="s5_l1_slide_text">=== PHONG CÁCH TỔNG THỂ ===
+Theme: Modern Tech Blue. Nền: Xanh đen (#060913). Font: Space Grotesk. Màu nhấn: Neon Cyan (#06b6d4).
+
+=== SLIDES ===
+Slide 1: Tiêu đề lớn: "Tìm hiểu về Vector Embeddings trong Xử lý Ngôn ngữ"
+Slide 2: Cách máy tính nhìn nhận từ ngữ: Sự chuyển đổi từ ký tự sang số thực.
+Slide 3: Định nghĩa Vector Embeddings và đại diện ngữ nghĩa.
+Slide 4: Khái niệm Không gian đa chiều (High-Dimensional Space) và số chiều của các mô hình.
+Slide 5: So sánh chi tiết Keyword Search vs. Semantic Search.
+Slide 6: Ứng dụng thực tế của Vector (Tìm kiếm ngữ nghĩa, phân cụm, gợi ý nội dung).
+Slide 7: Interface `EmbeddingModel` trong Spring AI 1.1.x.
+Slide 8: Mã nguồn mẫu: Xây dựng `EmbeddingService` cơ bản.
+Slide 9: Cấu hình API Key và cấu hình mô hình trong file properties.
+Slide 10: Tóm tắt bài học và chuẩn bị sang Lesson 02: Phép toán Cosine Similarity.</div>
+                  <button class="copy-btn" onclick="copyCode(this, 's5_l1_slide_text')"><i class="fas fa-copy"></i> Sao chép Prompt</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== SESSION 05 LESSON 02 ==================== -->
+        <section class="lesson-section" id="s5_l2">
+          <div class="lesson-banner">
+            <div class="lesson-subtitle">LESSON 02</div>
+            <h2 class="lesson-title">Cosine Similarity (Đo tương đồng ngữ nghĩa)</h2>
+          </div>
+
+          <div class="tab-container">
+            <div class="tab-nav">
+              <button class="tab-btn active" data-tab="theory"><i class="fas fa-book"></i> Lý thuyết</button>
+              <button class="tab-btn" data-tab="diagram"><i class="fas fa-project-diagram"></i> Sơ đồ & Minh họa</button>
+              <button class="tab-btn" data-tab="practice"><i class="fas fa-laptop-code"></i> Thực hành & Demo</button>
+              <button class="tab-btn" data-tab="video"><i class="fas fa-video"></i> Video Prompt</button>
+              <button class="tab-btn" data-tab="slide"><i class="fas fa-images"></i> Slides Prompt</button>
+            </div>
+
+            <!-- Tab: Theory -->
+            <div class="tab-pane active" id="s5_l2_pane_theory">
+              <div class="theory-content">
+                <h3>2.1 Phép toán Cosine Similarity</h3>
+                <p>Sau khi đã số hóa văn bản thành vector, làm thế nào để biết hai văn bản có nghĩa giống nhau? Chúng ta cần đo góc lệch giữa hai mũi tên (vector) đó trong không gian đa chiều.</p>
+                <p>Phép toán phổ biến nhất là <strong>Cosine Similarity (Độ tương đồng Cosine)</strong>. Công thức đo cos của góc tạo bởi hai vector:</p>
+                <div class="info-card" style="background: rgba(139,92,246,0.05);">
+                  <p style="font-family: var(--font-mono); font-size: 0.95rem; text-align: center;">
+                    Cosine Similarity(A, B) = (A · B) / (||A|| * ||B||)
+                  </p>
+                </div>
+                <p><strong>Giá trị Cosine trả về:</strong></p>
+                <ul>
+                  <li><strong>1:</strong> Góc lệch bằng 0 độ, hai vector trùng hướng hoàn toàn (Ngữ nghĩa giống hệt nhau).</li>
+                  <li><strong>0:</strong> Góc lệch 90 độ, hai vector vuông góc (Không liên quan ngữ nghĩa).</li>
+                  <li><strong>-1:</strong> Góc lệch 180 độ, hai vector ngược hướng hoàn toàn (Ngữ nghĩa trái ngược).</li>
+                </ul>
+
+                <h3>2.2 Thuật toán Top-K Search</h3>
+                <p>Quy trình lọc tìm ngữ nghĩa gồm 4 bước:</p>
+                <ol>
+                  <li>Chuyển câu hỏi (Query) của người dùng thành Query Vector ($V_q$).</li>
+                  <li>Tính Cosine Similarity giữa $V_q$ với tất cả các vector tài liệu trong bộ nhớ.</li>
+                  <li>Sắp xếp danh sách kết quả theo điểm số giảm dần.</li>
+                  <li>Lấy ra $K$ tài liệu có điểm số cao nhất (Top-K) để trả về cho người dùng hoặc bồi đắp vào Prompt.</li>
+                </ol>
+              </div>
+            </div>
+
+            <!-- Tab: Diagram & Illustration -->
+            <div class="tab-pane" id="s5_l2_pane_diagram">
+              <div class="diagram-visual-container">
+                <div class="card-container">
+                  <div class="card-title"><i class="fas fa-project-diagram"></i> Workflow Diagram (Mermaid)</div>
+                  <div class="mermaid-wrapper">
+                    <pre class="mermaid">
+graph TD
+    A["👤 User nhập Query: 'Cách cấu hình JDBC'"] --> B["💻 Chuyển thành Query Vector (V_q)"]
+    B --> C["🧮 Tính Cosine Similarity với mọi Document Vector trong bộ nhớ"]
+    C -->|"Doc 1: 'Spring Boot Database config' (Score: 0.89)"| D["Sắp xếp điểm số giảm dần"]
+    C -->|"Doc 2: 'Cách luộc gà ngon nhất' (Score: 0.12)"| D
+    C -->|"Doc 3: 'Cài đặt datasource driver' (Score: 0.85)"| D
+    D --> E["Lọc lấy Top-K (Ví dụ K = 2)"]
+    E --> F["Trả về Doc 1 & Doc 3 cho người dùng"]
+
+    style A fill:#0f172a,color:#fff
+    style B fill:#1e293b,color:#fff
+    style C fill:#4f46e5,color:#fff
+    style D fill:#b45309,color:#fff
+    style E fill:#15803d,color:#fff
+    style F fill:#0369a1,color:#fff
+                    </pre>
+                  </div>
+                </div>
+
+                <div class="card-container">
+                  <div class="card-title"><i class="fas fa-image"></i> Ảnh minh họa 3D Illustration</div>
+                  <div class="illustration-wrapper">
+                    <img class="illustration-img" src="images/s5_l2.png" alt="Cosine Similarity math">
+                  </div>
+                  <div class="prompt-drawer">
+                    <div class="prompt-drawer-header">
+                      <span>DALL-E Prompt</span>
+                      <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="prompt-drawer-body" style="display: none;">
+                      A sleek, geometric infographics demonstrating the mathematics of Cosine Similarity. Two glowing neon vectors, one colored bright cyan and the other hot pink, originate from a single source point in a dark three-dimensional coordinate grid. The angle between them is highlighted by a soft golden arc containing the mathematical symbol theta. Mathematical equations float softly in the background. Minimalist presentation style, high contrast, clean vector render, professional education slide background. The visual language is Vietnamese, with only technical terms retained in English.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab: Practice -->
+            <div class="tab-pane" id="s5_l2_pane_practice">
+              <div class="practice-container">
+                <div class="code-block-header">
+                  <span class="file-name">VectorUtils.java</span>
+                  <button class="copy-btn" onclick="copyCode(this, 's5_l2_c1')"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <div class="code-wrapper">
+                  <pre><code class="language-java" id="s5_l2_c1">package com.ai.vector_rag.util;
+
+public class VectorUtils {
+
+    public static double cosineSimilarity(float[] vectorA, float[] vectorB) {
+        if (vectorA.length != vectorB.length) {
+            throw new IllegalArgumentException("Hai vector phải có cùng số chiều");
+        }
+
+        double dotProduct = 0.0;
+        double normA = 0.0;
+        double normB = 0.0;
+
+        for (int i = 0; i < vectorA.length; i++) {
+            dotProduct += vectorA[i] * vectorB[i];
+            normA += Math.pow(vectorA[i], 2);
+            normB += Math.pow(vectorB[i], 2);
+        }
+
+        if (normA == 0 || normB == 0) return 0.0; // Tránh chia cho 0
+
+        return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+    }
+}</code></pre>
+                </div>
+
+                <!-- Simulator Widget -->
+                <div class="testing-lab-card" id="s5_l2_simulator">
+                  <div class="testing-lab-title">
+                    <i class="fas fa-terminal"></i> <span class="sim-title-text">Simulator: Cosine Similarity</span>
+                  </div>
+                  <div class="sim-grid">
+                    <div class="sim-visualizer">
+                      <svg class="sim-svg-connections">
+                        <!-- Custom layout just showing local math connection -->
+                      </svg>
+                      
+                      <div class="sim-node node-spring" data-node="spring" style="left: 35%; top: 40%; width: 160px;">
+                        <i class="fas fa-square-root-alt fa-2x"></i><br/>Cosine Math Engine
+                      </div>
+
+                      <div class="sim-packet"></div>
+                    </div>
+
+                    <div class="sim-interface">
+                      <div class="sim-interface-header">
+                        <span class="sim-title"><i class="fas fa-play-circle"></i> Trình mô phỏng luồng chạy</span>
+                        <span class="sim-status active"><span class="sim-status-dot"></span> Đang chờ lệnh</span>
+                      </div>
+                      <div class="sim-scenarios">
+                        <span class="scenario-label">Chọn kịch bản</span>
+                        <select class="scenario-select"></select>
+                      </div>
+                      <div class="sim-chat-area"></div>
+                      <div class="sim-input-area">
+                        <input type="text" class="sim-input" placeholder="Mô phỏng đầu vào..." readonly>
+                        <button class="sim-send-btn"><i class="fas fa-play"></i> RUN</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab: Video Prompt -->
+            <div class="tab-pane" id="s5_l2_pane_video">
+              <div class="prompt-container">
+                <div class="prompt-box">
+                  <div class="card-title"><i class="fas fa-film"></i> NotebookLM Video Prompt</div>
+                  <div class="prompt-text" id="s5_l2_video_text">=== STYLE PROMPT ===
+Giọng thuyết trình: Thực tế, nhiệt huyết, đơn giản hóa các phép toán phức tạp.
+Ngôn ngữ: Tiếng Việt, giữ các thuật ngữ (Cosine Similarity, Dot Product, Top-K, Score, Vector Space).
+
+=== NỘI DUNG AUDIO ===
+[00:00] Hook: "Làm thế nào để đo lường độ giống nhau của hai câu nói bất kỳ mà không cần viết hàng trăm hàm IF-ELSE? Chào mừng đến với phép toán Cosine Similarity."
+[02:00] Bản chất hình học: "Đừng sợ hãi bởi công thức toán học. Thực chất, Cosine Similarity chỉ đo góc lệch giữa hai mũi tên. Góc càng nhỏ, giá trị Cosine càng tiến gần 1, nghĩa là ý nghĩa của hai câu càng giống nhau."
+[04:30] Quy trình Top-K: "Sau khi tính điểm tương đồng với tất cả tài liệu, thuật toán Top-K sẽ sắp xếp và lọc ra K tài liệu khớp nhất. Đây là trái tim của mọi công cụ tìm kiếm thông minh."
+[07:00] Phân tích code: [Duyệt qua class VectorUtils.java] "Chúng ta tính tích vô hướng chia cho tích độ lớn hai vector. Code Java viết cực kỳ tường minh."
+[09:30] Kết luận: "Tính toán trong RAM chỉ phù hợp với tập dữ liệu nhỏ. Với hàng triệu bản ghi, chúng ta cần một cơ sở dữ liệu vector chuyên dụng, nội dung của bài học tiếp theo."</div>
+                  <button class="copy-btn" onclick="copyCode(this, 's5_l2_video_text')"><i class="fas fa-copy"></i> Sao chép Prompt</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab: Slides Prompt -->
+            <div class="tab-pane" id="s5_l2_pane_slide">
+              <div class="prompt-container">
+                <div class="prompt-box">
+                  <div class="card-title"><i class="fas fa-file-powerpoint"></i> Google Slides Prompt</div>
+                  <div class="prompt-text" id="s5_l2_slide_text">=== PHONG CÁCH TỔNG THỂ ===
+Theme: Tech Minimalist. Nền: Xám đen (#0b0f19). Font: Space Grotesk. Màu nhấn: Neon Orange (#f59e0b).
+
+=== SLIDES ===
+Slide 1: Tiêu đề lớn: "Phép toán Cosine Similarity & Thuật toán tìm kiếm Top-K"
+Slide 2: Đặt vấn đề: Đo lường khoảng cách ngữ nghĩa trong không gian vector.
+Slide 3: Công thức toán học Cosine Similarity chi tiết.
+Slide 4: Ý nghĩa hình học: Biểu diễn góc lệch θ giữa hai vector.
+Slide 5: Thang điểm Cosine: Phân tích các mốc giá trị từ -1 đến 1 trong NLP.
+Slide 6: Sơ đồ thuật toán Top-K Search trên dữ liệu vector.
+Slide 7: Mã nguồn mẫu: Triển khai lớp tiện ích `VectorUtils` tính toán cosine.
+Slide 8: Triển khai bộ lọc Java Stream để sắp xếp và xếp hạng kết quả Top-K.
+Slide 9: Thử nghiệm thực tế: So sánh điểm số tương đồng giữa các câu mẫu.
+Slide 10: Tóm tắt bài học và giới thiệu bài học tiếp theo PGVector.</div>
+                  <button class="copy-btn" onclick="copyCode(this, 's5_l2_slide_text')"><i class="fas fa-copy"></i> Sao chép Prompt</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== SESSION 05 LESSON 03 ==================== -->
+        <section class="lesson-section" id="s5_l3">
+          <div class="lesson-banner">
+            <div class="lesson-subtitle">LESSON 03</div>
+            <h2 class="lesson-title">Vector Database & PGVector</h2>
+          </div>
+
+          <div class="tab-container">
+            <div class="tab-nav">
+              <button class="tab-btn active" data-tab="theory"><i class="fas fa-book"></i> Lý thuyết</button>
+              <button class="tab-btn" data-tab="diagram"><i class="fas fa-project-diagram"></i> Sơ đồ & Minh họa</button>
+              <button class="tab-btn" data-tab="practice"><i class="fas fa-laptop-code"></i> Thực hành & Demo</button>
+              <button class="tab-btn" data-tab="video"><i class="fas fa-video"></i> Video Prompt</button>
+              <button class="tab-btn" data-tab="slide"><i class="fas fa-images"></i> Slides Prompt</button>
+            </div>
+
+            <!-- Tab: Theory -->
+            <div class="tab-pane active" id="s5_l3_pane_theory">
+              <div class="theory-content">
+                <h3>3.1 Tại sao cần Vector Database chuyên dụng?</h3>
+                <p>Khi dữ liệu tăng lên hàng triệu bản ghi, việc duyệt tuyến tính (Linear Scan - $O(N)$) trong RAM để tính Cosine Similarity sẽ làm sập máy chủ do tốn CPU và độ trễ quá cao. Chúng ta cần hệ cơ sở dữ liệu tối ưu riêng cho việc lập chỉ mục (Indexing) và lưu trữ vector, được gọi là <strong>Vector Database</strong>.</p>
+                <p>Các Vector Database cung cấp thuật toán tìm kiếm lân cận gần đúng (Approximate Nearest Neighbor - ANN) để truy vấn thời gian thực với độ phức tạp chỉ ở mức $O(\log N)$.</p>
+
+                <h3>3.2 Hệ sinh thái Vector DB</h3>
+                <ul>
+                  <li><strong>PGVector:</strong> Extension nguồn mở cho PostgreSQL. Rất được ưa chuộng bởi lập trình viên Java/Spring vì tận dụng ngay hệ thống dữ liệu quan hệ sẵn có.</li>
+                  <li><strong>Supabase:</strong> Nền tảng cloud tích hợp sẵn PGVector.</li>
+                  <li><strong>Pinecone / Milvus:</strong> Hệ quản trị Vector DB chuyên biệt, cực mạnh cho dữ liệu khổng lồ.</li>
+                </ul>
+
+                <h3>3.3 Các thuật toán lập chỉ mục (Indexing)</h3>
+                <ol>
+                  <li><strong>IVFFlat (Inverted File Flat):</strong> Phân cụm không gian vector. Tìm kiếm nhanh, ít tốn RAM nhưng độ chính xác ở mức trung bình.</li>
+                  <li><strong>HNSW (Hierarchical Navigable Small World):</strong> Xây dựng đồ thị đa tầng liên kết các vector. Tốc độ siêu nhanh, chính xác cao nhưng tốn nhiều RAM.</li>
+                </ol>
+              </div>
+            </div>
+
+            <!-- Tab: Diagram & Illustration -->
+            <div class="tab-pane" id="s5_l3_pane_diagram">
+              <div class="diagram-visual-container">
+                <div class="card-container">
+                  <div class="card-title"><i class="fas fa-project-diagram"></i> Workflow Diagram (Mermaid)</div>
+                  <div class="mermaid-wrapper">
+                    <pre class="mermaid">
+sequenceDiagram
+    autonumber
+    participant App as 💻 Spring Boot Application
+    participant DB as 🐘 PostgreSQL + PGVector
+    
+    Note over DB: Khởi tạo bảng với cột kiểu vector(1536)
+    App->>DB: Thực hiện câu lệnh SQL tạo HNSW Index
+    App->>DB: INSERT INTO items (content, embedding) VALUES ('...', '[0.012, ...]')
+    
+    rect rgb(30, 41, 59)
+        Note over App, DB: Quá trình tìm kiếm ngữ nghĩa
+        App->>DB: SELECT content, 1 - (embedding <=> '[0.091, ...]') AS similarity FROM items ORDER BY similarity DESC LIMIT 2
+        DB-->>App: Trả về các dòng dữ liệu khớp kèm điểm số tương đồng
+    end
+                    </pre>
+                  </div>
+                </div>
+
+                <div class="card-container">
+                  <div class="card-title"><i class="fas fa-image"></i> Ảnh minh họa 3D Illustration</div>
+                  <div class="illustration-wrapper">
+                    <img class="illustration-img" src="images/s5_l3.png" alt="Vector Database Indexing and Clusters">
+                  </div>
+                  <div class="prompt-drawer">
+                    <div class="prompt-drawer-header">
+                      <span>DALL-E Prompt</span>
+                      <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="prompt-drawer-body" style="display: none;">
+                      A highly technical schematic representation of a Hierarchical Navigable Small World (HNSW) graph in a database. Dotted geometric layers sit stacked on top of each other. Bright neon green and orange nodes are scattered across these layers, connected by sharp, glowing fiber-optic-like lines showing paths of navigation. The background is a sleek, dark server rack environment with subtle binary code textures. High-tech corporate presentation slide style, clean layout, architectural blueprint aesthetic. The visual language is Vietnamese, with only technical terms retained in English.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab: Practice -->
+            <div class="tab-pane" id="s5_l3_pane_practice">
+              <div class="practice-container">
+                <div class="code-block-header">
+                  <span class="file-name">build.gradle</span>
+                  <button class="copy-btn" onclick="copyCode(this, 's5_l3_c1')"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <div class="code-wrapper">
+                  <pre><code class="language-groovy" id="s5_l3_c1">dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.ai:spring-ai-starter-model-openai'
+    // Dependency cho PGVector VectorStore
+    implementation 'org.springframework.ai:spring-ai-pgvector-store-starter'
+    runtimeOnly 'org.postgresql:postgresql'
+}</code></pre>
+                </div>
+
+                <div class="code-block-header">
+                  <span class="file-name">VectorDbService.java</span>
+                  <button class="copy-btn" onclick="copyCode(this, 's5_l3_c2')"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <div class="code-wrapper">
+                  <pre><code class="language-java" id="s5_l3_c2">package com.ai.vector_rag.service;
+
+import org.springframework.ai.document.Document;
+import org.springframework.ai.vectorstore.SearchRequest;
+import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.Map;
+
+@Service
+public class VectorDbService {
+
+    private final VectorStore vectorStore;
+
+    // PgVectorVectorStore tự động được tiêm vào thông qua starter
+    public VectorDbService(VectorStore vectorStore) {
+        this.vectorStore = vectorStore;
+    }
+
+    public void addDocument(String id, String content, Map<String, Object> metadata) {
+        Document doc = new Document(id, content, metadata);
+        this.vectorStore.add(List.of(doc)); // Tự động gọi Embedding API & lưu DB
+    }
+
+    public List<Document> searchRelated(String query, int topK) {
+        SearchRequest searchRequest = SearchRequest.defaults()
+                .withQuery(query)
+                .withTopK(topK)
+                .withSimilarityThreshold(0.7);
+        return this.vectorStore.similaritySearch(searchRequest);
+    }
+}</code></pre>
+                </div>
+
+                <!-- Simulator Widget -->
+                <div class="testing-lab-card" id="s5_l3_simulator">
+                  <div class="testing-lab-title">
+                    <i class="fas fa-terminal"></i> <span class="sim-title-text">Simulator: PGVector HNSW Indexing Search</span>
+                  </div>
+                  <div class="sim-grid">
+                    <div class="sim-visualizer">
+                      <svg class="sim-svg-connections">
+                        <path id="path-spring-db" class="sim-connection-path" d="M 190,250 L 320,350" />
+                      </svg>
+                      
+                      <div class="sim-node node-spring" data-node="spring">
+                        <i class="fab fa-envira fa-2x"></i><br/>Spring Boot Client
+                      </div>
+                      <div class="sim-node node-db" data-node="db">
+                        <i class="fas fa-database fa-2x"></i><br/>Postgres (PGVector)
+                      </div>
+
+                      <div class="sim-packet"></div>
+                    </div>
+
+                    <div class="sim-interface">
+                      <div class="sim-interface-header">
+                        <span class="sim-title"><i class="fas fa-play-circle"></i> Trình mô phỏng luồng chạy</span>
+                        <span class="sim-status active"><span class="sim-status-dot"></span> Đang chờ lệnh</span>
+                      </div>
+                      <div class="sim-scenarios">
+                        <span class="scenario-label">Chọn kịch bản</span>
+                        <select class="scenario-select"></select>
+                      </div>
+                      <div class="sim-chat-area"></div>
+                      <div class="sim-input-area">
+                        <input type="text" class="sim-input" placeholder="Mô phỏng đầu vào..." readonly>
+                        <button class="sim-send-btn"><i class="fas fa-play"></i> RUN</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab: Video Prompt -->
+            <div class="tab-pane" id="s5_l3_pane_video">
+              <div class="prompt-container">
+                <div class="prompt-box">
+                  <div class="card-title"><i class="fas fa-film"></i> NotebookLM Video Prompt</div>
+                  <div class="prompt-text" id="s5_l3_video_text">=== STYLE PROMPT ===
+Giọng thuyết trình: Rành mạch, đi sâu vào cấu trúc kiến trúc dữ liệu và hiệu năng hệ thống.
+Ngôn ngữ: Tiếng Việt, giữ các thuật ngữ (Vector Store, Indexing, HNSW, IVFFlat, ANN Search, pgvector).
+
+=== NỘI DUNG AUDIO ===
+[00:00] Hook: "Khi hệ thống có hàng triệu tài liệu, việc tính toán thủ công trong RAM sẽ làm sập máy chủ ngay lập tức. Đây là lý do tại sao chúng ta cần đến PGVector."
+[02:15] Tại sao chọn PGVector: "Thay vì vận hành một hệ cơ sở dữ liệu hoàn toàn mới phức tạp. PGVector mở rộng ngay trên PostgreSQL có sẵn. Vừa hỗ trợ SQL quan hệ, vừa truy vấn vector hiệu năng cao."
+[04:45] So sánh HNSW và IVFFlat: "HNSW liên kết các trang sách có nội dung tương đồng bằng những sợi dây đồ thị phát sáng, giúp thời gian tìm kiếm lân cận gần đúng chỉ dưới 10 mili giây."
+[07:30] Phân tích code: [Duyệt qua build.gradle và VectorDbService.java] "Interface VectorStore của Spring AI tự động hóa toàn bộ việc gọi API Embedding và thực thi câu lệnh SQL lưu trữ chỉ bằng một lệnh .add()."
+[10:30] Kết luận: "Làm chủ PGVector mở ra cánh cửa xây dựng ứng dụng chatbot RAG hoàn chỉnh cho doanh nghiệp, chúng ta sẽ thực hành ngay ở bài học cuối cùng."</div>
+                  <button class="copy-btn" onclick="copyCode(this, 's5_l3_video_text')"><i class="fas fa-copy"></i> Sao chép Prompt</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab: Slides Prompt -->
+            <div class="tab-pane" id="s5_l3_pane_slide">
+              <div class="prompt-container">
+                <div class="prompt-box">
+                  <div class="card-title"><i class="fas fa-file-powerpoint"></i> Google Slides Prompt</div>
+                  <div class="prompt-text" id="s5_l3_slide_text">=== PHONG CÁCH TỔNG THỂ ===
+Theme: Developer Minimalist. Nền: Đen trầm (#090d16). Font: Inter. Màu nhấn: Violet (#8b5cf6).
+
+=== SLIDES ===
+Slide 1: Tiêu đề lớn: "Cấu hình & Sử dụng Vector Database PGVector trong Spring AI"
+Slide 2: Hạn chế của Linear Scan O(N) và tại sao cần Indexing chuyên dụng.
+Slide 3: Khái niệm thuật toán ANN (Approximate Nearest Neighbor).
+Slide 4: Giới thiệu PGVector extension trên PostgreSQL.
+Slide 5: So sánh thuật toán Indexing HNSW vs. IVFFlat về tốc độ, độ chính xác và dung lượng RAM.
+Slide 6: Khai báo dependency `spring-ai-pgvector-store-starter` trong Gradle.
+Slide 7: Cấu hình connection URL và tham số dimensions trong application.properties.
+Slide 8: Sử dụng interface `VectorStore` để thêm tài liệu (`.add()`).
+Slide 9: Thực thi tìm kiếm tương đồng ngữ nghĩa (`.similaritySearch()`) với `SearchRequest`.
+Slide 10: Tóm tắt bài học và chuẩn bị cho bài thực chiến RAG Chatbot cuối cùng.</div>
+                  <button class="copy-btn" onclick="copyCode(this, 's5_l3_slide_text')"><i class="fas fa-copy"></i> Sao chép Prompt</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== SESSION 05 LESSON 04 ==================== -->
+        <section class="lesson-section" id="s5_l4">
+          <div class="lesson-banner">
+            <div class="lesson-subtitle">LESSON 04</div>
+            <h2 class="lesson-title">RAG Chatbot từ tài liệu nội bộ</h2>
+          </div>
+
+          <div class="tab-container">
+            <div class="tab-nav">
+              <button class="tab-btn active" data-tab="theory"><i class="fas fa-book"></i> Lý thuyết</button>
+              <button class="tab-btn" data-tab="diagram"><i class="fas fa-project-diagram"></i> Sơ đồ & Minh họa</button>
+              <button class="tab-btn" data-tab="practice"><i class="fas fa-laptop-code"></i> Thực hành & Demo</button>
+              <button class="tab-btn" data-tab="video"><i class="fas fa-video"></i> Video Prompt</button>
+              <button class="tab-btn" data-tab="slide"><i class="fas fa-images"></i> Slides Prompt</button>
+            </div>
+
+            <!-- Tab: Theory -->
+            <div class="tab-pane active" id="s5_l4_pane_theory">
+              <div class="theory-content">
+                <h3>4.1 Khái niệm RAG (Retrieval-Augmented Generation)</h3>
+                <p>Mặc dù các mô hình ngôn ngữ lớn (LLM) có kiến thức khổng lồ, chúng vẫn có 3 điểm yếu chí mạng:</p>
+                <ol>
+                  <li><strong>Knowledge Cutoff (Giới hạn kiến thức):</strong> Không biết thông tin mới cập nhật sau thời điểm huấn luyện.</li>
+                  <li><strong>Hallucination (Ảo tưởng):</strong> Tự "bịa" ra thông tin sai sự thật một cách rất thuyết phục khi không có sẵn dữ liệu.</li>
+                  <li><strong>Không có kiến thức nội bộ:</strong> Không thể truy cập tài liệu mật hoặc quy trình nghiệp vụ nội bộ của công ty.</li>
+                </ol>
+                <p>Để giải quyết triệt để mà không cần Fine-tuning tốn kém, chúng ta sử dụng kỹ thuật <strong>RAG (Tạo câu trả lời tăng cường bằng truy xuất)</strong>.</p>
+
+                <h3>4.2 Luồng xử lý chi tiết</h3>
+                <div class="info-card">
+                  <div class="info-card-title"><i class="fas fa-sign-in-alt"></i> Giai đoạn Ingestion (Nạp dữ liệu offline)</div>
+                  <p>1. Đọc tài liệu (PDF, Word, Markdown, Webpage).</p>
+                  <p>2. Cắt nhỏ tài liệu (Chunking) thành từng đoạn nhỏ (ví dụ: 500 ký tự).</p>
+                  <p>3. Embedding chuyển từng đoạn thành vector.</p>
+                  <p>4. Lưu trữ cặp [đoạn văn bản + vector] vào Vector Database.</p>
+                </div>
+                <div class="info-card" style="background: rgba(16,185,129,0.05); border-color: var(--success)">
+                  <div class="info-card-title"><i class="fas fa-search"></i> Giai đoạn Retrieval & Generation (Thời gian thực)</div>
+                  <p>1. Nhận câu hỏi từ User -> Chuyển thành vector.</p>
+                  <p>2. Tìm kiếm tương đồng ngữ nghĩa trong Vector DB để lấy ra Top-K tài liệu khớp nhất.</p>
+                  <p>3. Bồi đắp Prompt mới: Hợp nhất [Câu hỏi] + [Ngữ cảnh tài liệu tìm được] thành Prompt tối ưu.</p>
+                  <p>4. Gửi Prompt bồi đắp sang LLM để sinh câu trả lời chính xác, loại bỏ ảo tưởng.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab: Diagram & Illustration -->
+            <div class="tab-pane" id="s5_l4_pane_diagram">
+              <div class="diagram-visual-container">
+                <div class="card-container">
+                  <div class="card-title"><i class="fas fa-project-diagram"></i> Workflow Diagram (Mermaid)</div>
+                  <div class="mermaid-wrapper">
+                    <pre class="mermaid">
+sequenceDiagram
+    autonumber
+    actor User as 👤 Người dùng
+    participant App as 💻 Spring Boot Application
+    participant DB as 💾 Vector Database (Postgres)
+    participant LLM as ☁️ LLM Model (Gemini/OpenAI)
+
+    User->>App: Gửi câu hỏi ("Khách sạn có phạt nếu hút thuốc không?")
+    App->>DB: Truy vấn lân cận (Similarity Search) với câu hỏi
+    DB-->>App: Trả về: "Quy định cấm hút thuốc, phạt 2,000,000 VND"
+    App->>App: Bồi đắp Prompt (Hợp nhất Câu hỏi + Ngữ cảnh quy định phạt)
+    App->>LLM: Gửi Prompt hoàn chỉnh (Prompt + Context)
+    LLM-->>App: Trả về: "Có, khách sạn cấm hút thuốc hoàn toàn và nếu vi phạm bạn sẽ bị phạt 2 triệu VND."
+    App-->>User: Trả về câu trả lời chính xác cho người dùng
+                    </pre>
+                  </div>
+                </div>
+
+                <div class="card-container">
+                  <div class="card-title"><i class="fas fa-image"></i> Ảnh minh họa 3D Illustration</div>
+                  <div class="illustration-wrapper">
+                    <img class="illustration-img" src="images/s5_l4.png" alt="Complete RAG Chatbot Pipeline">
+                  </div>
+                  <div class="prompt-drawer">
+                    <div class="prompt-drawer-header">
+                      <span>DALL-E Prompt</span>
+                      <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="prompt-drawer-body" style="display: none;">
+                      A highly detailed, beautiful technical infographic showing the end-to-end RAG (Retrieval-Augmented Generation) pipeline. At the top, a document icon is split into blocks (chunks), which slide down glowing neon pipes into a cylinder labeled "Vector Database". At the bottom, a user sends a message through a chat bubble, which triggers a quick scan in the database, merges the found documents with the query inside a glowing processor node, and finally outputs a clean answer through a friendly AI avatar. Modern flat design, gradient blue, purple, and gold colors, dark mode backdrop. The visual language is Vietnamese, with only technical terms retained in English.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab: Practice -->
+            <div class="tab-pane" id="s5_l4_pane_practice">
+              <div class="practice-container">
+                <div class="code-block-header">
+                  <span class="file-name">RagChatService.java</span>
+                  <button class="copy-btn" onclick="copyCode(this, 's5_l4_c1')"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <div class="code-wrapper">
+                  <pre><code class="language-java" id="s5_l4_c1">package com.ai.vector_rag.service;
+
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
+import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.ai.vectorstore.SearchRequest;
+import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.stereotype.Service;
+
+@Service
+public class RagChatService {
+
+    private final ChatClient chatClient;
+
+    public RagChatService(ChatModel chatModel, VectorStore vectorStore) {
+        this.chatClient = ChatClient.builder(chatModel)
+                .defaultAdvisors(new QuestionAnswerAdvisor(vectorStore, SearchRequest.defaults()))
+                .build();
+    }
+
+    public String askUsingRag(String question) {
+        return this.chatClient.prompt()
+                .user(question)
+                .call()
+                .content();
+    }
+}</code></pre>
+                </div>
+
+                <!-- Simulator Widget -->
+                <div class="testing-lab-card" id="s5_l4_simulator">
+                  <div class="testing-lab-title">
+                    <i class="fas fa-terminal"></i> <span class="sim-title-text">Simulator: Complete RAG Chatbot Flow</span>
+                  </div>
+                  <div class="sim-grid">
+                    <div class="sim-visualizer">
+                      <svg class="sim-svg-connections">
+                        <path id="path-user-spring" class="sim-connection-path" d="M 60,215 L 175,215" />
+                        <path id="path-spring-db" class="sim-connection-path" d="M 190,250 L 320,350" />
+                        <path id="path-spring-llm" class="sim-connection-path" d="M 190,190 L 320,95" />
+                      </svg>
+                      
+                      <div class="sim-node node-user" data-node="user">
+                        <i class="fas fa-user-circle fa-2x"></i><br/>User Client
+                      </div>
+                      <div class="sim-node node-spring" data-node="spring">
+                        <i class="fab fa-envira fa-2x"></i><br/>Spring Boot Client
+                      </div>
+                      <div class="sim-node node-llm" data-node="llm">
+                        <i class="fas fa-brain fa-2x"></i><br/>LLM Model
+                      </div>
+                      <div class="sim-node node-db" data-node="db">
+                        <i class="fas fa-database fa-2x"></i><br/>PGVector DB
+                      </div>
+
+                      <div class="sim-packet"></div>
+                    </div>
+
+                    <div class="sim-interface">
+                      <div class="sim-interface-header">
+                        <span class="sim-title"><i class="fas fa-play-circle"></i> Trình mô phỏng luồng chạy</span>
+                        <span class="sim-status active"><span class="sim-status-dot"></span> Đang chờ lệnh</span>
+                      </div>
+                      <div class="sim-scenarios">
+                        <span class="scenario-label">Chọn kịch bản</span>
+                        <select class="scenario-select"></select>
+                      </div>
+                      <div class="sim-chat-area"></div>
+                      <div class="sim-input-area">
+                        <input type="text" class="sim-input" placeholder="Mô phỏng đầu vào..." readonly>
+                        <button class="sim-send-btn"><i class="fas fa-play"></i> RUN</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab: Video Prompt -->
+            <div class="tab-pane" id="s5_l4_pane_video">
+              <div class="prompt-container">
+                <div class="prompt-box">
+                  <div class="card-title"><i class="fas fa-film"></i> NotebookLM Video Prompt</div>
+                  <div class="prompt-text" id="s5_l4_video_text">=== STYLE PROMPT ===
+Giọng thuyết trình: Lôi cuốn, thực tế, nhắm tới lập trình viên xây dựng ứng dụng thật.
+Ngôn ngữ: Tiếng Việt, giữ các thuật ngữ (RAG, Knowledge Cutoff, Hallucination, Ingestion, Retrieval, QuestionAnswerAdvisor).
+
+=== NỘI DUNG AUDIO ===
+[00:00] Hook: "Làm thế nào để chatbot trả lời chính xác các câu hỏi về tài liệu nội bộ công ty bạn mà không bao giờ bịa đặt thông tin? Chào mừng đến với bài học xây dựng RAG Chatbot bằng Spring AI."
+[02:00] Bản chất RAG: "RAG là viết tắt của Retrieval-Augmented Generation. Thay vì fine-tune tốn kém, chúng ta tìm kiếm tài liệu liên quan trong Vector Database rồi chèn trực tiếp làm ngữ cảnh vào prompt gửi LLM."
+[05:00] Tiết kiệm thời gian bằng Advisor: [Xem code RagChatService.java] "Spring AI cung cấp class QuestionAnswerAdvisor. Nó tự động hóa toàn bộ việc truy vấn vector, bồi đắp prompt và gọi LLM chỉ bằng một dòng cấu hình."
+[08:00] Chạy thử & Nghiệm thu: [Chạy thử request hỏi quy định hút thuốc] "Mặc dù LLM không học dữ liệu này trong lúc train, nhờ có RAG, nó đọc tài liệu từ DB và trả lời chính xác số tiền phạt 2 triệu đồng."
+[11:00] Kết luận: "Bạn đã làm chủ hoàn toàn quy trình xây dựng RAG Chatbot thông minh kết nối PGVector. Hãy bắt tay vào nâng cấp ứng dụng của riêng bạn ngay hôm nay."</div>
+                  <button class="copy-btn" onclick="copyCode(this, 's5_l4_video_text')"><i class="fas fa-copy"></i> Sao chép Prompt</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab: Slides Prompt -->
+            <div class="tab-pane" id="s5_l4_pane_slide">
+              <div class="prompt-container">
+                <div class="prompt-box">
+                  <div class="card-title"><i class="fas fa-file-powerpoint"></i> Google Slides Prompt</div>
+                  <div class="prompt-text" id="s5_l4_slide_text">=== PHONG CÁCH TỔNG THỂ ===
+Theme: Modern Developer. Nền: Xám đen tráng gương (#0d1117). Font: Inter. Màu nhấn: Mint Green (#34d399).
+
+=== SLIDES ===
+Slide 1: Tiêu đề lớn: "Xây dựng ứng dụng RAG Chatbot hoàn chỉnh từ tài liệu nội bộ"
+Slide 2: 3 điểm yếu chí mạng của LLM: Knowledge Cutoff, Hallucination, lack of private data.
+Slide 3: Định nghĩa kiến trúc RAG (Retrieval-Augmented Generation).
+Slide 4: Sơ đồ luồng Giai đoạn Ingestion (Đọc -> Chunking -> Embedding -> Lưu DB).
+Slide 5: Sơ đồ luồng Giai đoạn Retrieval & Generation thời gian thực.
+Slide 6: Giới thiệu `QuestionAnswerAdvisor` trong Spring AI: Giải pháp tự động hóa.
+Slide 7: Mã nguồn mẫu: Viết Service `RagChatService` tích hợp Advisor.
+Slide 8: Xây dựng REST Controller phơi bày API hỏi đáp RAG.
+Slide 9: Lab kiểm thử: Thử nghiệm hỏi các chính sách không có trong tri thức chung của LLM.
+Slide 10: Tóm tắt Session 05 và các lưu ý tối ưu hóa chất lượng RAG (chunk size, overlap, hybrid search).</div>
+                  <button class="copy-btn" onclick="copyCode(this, 's5_l4_slide_text')"><i class="fas fa-copy"></i> Sao chép Prompt</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- Footer -->
+      <footer class="credits-footer">
+        Thiết kế và phát triển bởi <i class="fas fa-heart"></i> Antigravity Agent &copy; 2026. Rikkei Academy AI Course.
+      </footer>
+    </main>
+  </div>
+
+  <!-- Custom Script logic -->
+  <script src="script.js"></script>
+</body>
+</html>

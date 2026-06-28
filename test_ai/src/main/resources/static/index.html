@@ -1,0 +1,1596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring AI & Ollama (Qwen) Test Client</title>
+    <!-- Modern Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #020617;
+            --card-bg: rgba(5, 14, 34, 0.66);
+            --card-border: rgba(125, 211, 252, 0.22);
+            --accent-color: #22d3ee;
+            --accent-glow: rgba(34, 211, 238, 0.34);
+            --secondary-color: #34d399;
+            --hot-color: #60a5fa;
+            --text-main: #f8fafc;
+            --text-muted: #a8b6cc;
+            --font-family: 'Inter', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image:
+                radial-gradient(circle at 20% 10%, rgba(34, 211, 238, 0.18), transparent 32rem),
+                radial-gradient(circle at 86% 16%, rgba(96, 165, 250, 0.16), transparent 30rem),
+                radial-gradient(circle at 50% 100%, rgba(52, 211, 153, 0.13), transparent 34rem),
+                linear-gradient(135deg, #020617 0%, #07111f 46%, #020617 100%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            font-family: var(--font-family);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            perspective: 1400px;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: -4;
+            background-image:
+                linear-gradient(rgba(125, 211, 252, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(125, 211, 252, 0.04) 1px, transparent 1px);
+            background-size: 44px 44px;
+            transform: perspective(800px) rotateX(62deg) translateY(-26%);
+            transform-origin: top;
+            animation: gridDrift 18s linear infinite;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background:
+                linear-gradient(transparent 0, rgba(125, 211, 252, 0.035) 50%, transparent 100%),
+                radial-gradient(circle at 50% 50%, transparent 0, rgba(2, 6, 23, 0.46) 76%);
+            background-size: 100% 4px, 100% 100%;
+            mix-blend-mode: screen;
+        }
+
+        #neural-bg {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -3;
+            opacity: 0.92;
+        }
+
+        .hologram-orbit {
+            position: fixed;
+            width: 42rem;
+            height: 42rem;
+            top: 5%;
+            right: -17rem;
+            z-index: -2;
+            border: 1px solid rgba(34, 211, 238, 0.18);
+            border-radius: 50%;
+            box-shadow:
+                inset 0 0 60px rgba(34, 211, 238, 0.08),
+                0 0 110px rgba(34, 211, 238, 0.08);
+            animation: orbitSpin 22s linear infinite;
+        }
+
+        .hologram-orbit::before,
+        .hologram-orbit::after {
+            content: '';
+            position: absolute;
+            inset: 10%;
+            border-radius: 50%;
+            border: 1px dashed rgba(52, 211, 153, 0.22);
+            transform: rotateX(68deg) rotateZ(18deg);
+        }
+
+        .hologram-orbit::after {
+            inset: 22%;
+            border-color: rgba(96, 165, 250, 0.22);
+            transform: rotateY(66deg) rotateZ(-20deg);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1120px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2.25rem;
+            padding-top: 1rem;
+            transform-style: preserve-3d;
+        }
+
+        header h1 {
+            font-size: clamp(2.4rem, 6vw, 5.1rem);
+            font-weight: 800;
+            letter-spacing: 0;
+            line-height: 0.95;
+            background: linear-gradient(90deg, #e0f2fe 0%, #67e8f9 34%, #34d399 68%, #bfdbfe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.75rem;
+            filter: drop-shadow(0 0 22px rgba(34, 211, 238, 0.35));
+            animation: titleFloat 5s ease-in-out infinite;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            font-weight: 400;
+            text-shadow: 0 0 18px rgba(34, 211, 238, 0.24);
+        }
+
+        .badge-container {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .badge {
+            padding: 0.38rem 0.85rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            backdrop-filter: blur(16px);
+            box-shadow: 0 0 24px rgba(34, 211, 238, 0.08);
+        }
+
+        .badge-spring {
+            background-color: rgba(52, 211, 153, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(52, 211, 153, 0.3);
+        }
+
+        .badge-gemini {
+            background-color: rgba(34, 211, 238, 0.13);
+            color: #67e8f9;
+            border: 1px solid rgba(34, 211, 238, 0.3);
+        }
+
+        /* Tabs Interface */
+        .tabs {
+            display: flex;
+            background: rgba(2, 8, 23, 0.72);
+            border: 1px solid var(--card-border);
+            padding: 0.45rem;
+            border-radius: 18px;
+            margin-bottom: 2rem;
+            gap: 0.35rem;
+            backdrop-filter: blur(22px);
+            box-shadow:
+                0 18px 60px rgba(0, 0, 0, 0.34),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08),
+                0 0 34px rgba(34, 211, 238, 0.1);
+            transform: translateZ(20px);
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 0.82rem 0.9rem;
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 13px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tab-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent 0%, rgba(125, 211, 252, 0.18) 45%, transparent 70%);
+            transform: translateX(-120%);
+            transition: transform 0.55s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+            background: rgba(14, 165, 233, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .tab-btn:hover::before {
+            transform: translateX(120%);
+        }
+
+        .tab-btn.active {
+            color: var(--text-main);
+            background:
+                linear-gradient(135deg, rgba(34, 211, 238, 0.22), rgba(52, 211, 153, 0.12)),
+                rgba(15, 23, 42, 0.74);
+            border: 1px solid rgba(125, 211, 252, 0.46);
+            box-shadow:
+                0 8px 24px rgba(34, 211, 238, 0.18),
+                inset 0 0 18px rgba(34, 211, 238, 0.09);
+        }
+
+        /* Card styles */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(24px) saturate(1.25);
+            border: 1px solid var(--card-border);
+            border-radius: 18px;
+            padding: 2rem;
+            box-shadow:
+                0 24px 90px rgba(0, 0, 0, 0.42),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                0 0 42px rgba(34, 211, 238, 0.1);
+            margin-bottom: 2rem;
+            transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background:
+                linear-gradient(120deg, rgba(255, 255, 255, 0.12), transparent 18%, transparent 78%, rgba(34, 211, 238, 0.1)),
+                radial-gradient(circle at 15% 0%, rgba(34, 211, 238, 0.16), transparent 32%);
+            opacity: 0.8;
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            width: 14rem;
+            height: 14rem;
+            right: -5rem;
+            top: -5rem;
+            border-radius: 50%;
+            border: 1px solid rgba(34, 211, 238, 0.18);
+            box-shadow: inset 0 0 42px rgba(34, 211, 238, 0.08);
+            animation: orbitSpin 14s linear infinite;
+            pointer-events: none;
+        }
+
+        .card:hover {
+            transform: translateY(-5px) rotateX(1deg);
+            border-color: rgba(125, 211, 252, 0.48);
+            box-shadow:
+                0 30px 100px rgba(0, 0, 0, 0.48),
+                inset 0 1px 0 rgba(255, 255, 255, 0.14),
+                0 0 58px rgba(34, 211, 238, 0.18);
+        }
+
+        .card > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(18px) rotateX(4deg); }
+            to { opacity: 1; transform: translateY(0) rotateX(0deg); }
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .input-control {
+            width: 100%;
+            background: rgba(2, 8, 23, 0.78);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 0.85rem 1rem;
+            color: var(--text-main);
+            font-family: var(--font-family);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 0 20px rgba(15, 23, 42, 0.8);
+        }
+
+        .input-control:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow:
+                0 0 0 3px rgba(34, 211, 238, 0.12),
+                0 0 28px var(--accent-glow),
+                inset 0 0 22px rgba(34, 211, 238, 0.05);
+        }
+
+        textarea.input-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #22d3ee 0%, #2563eb 52%, #34d399 100%);
+            color: #eff6ff;
+            border: none;
+            border-radius: 14px;
+            padding: 0.85rem 1.75rem;
+            font-size: 0.95rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow:
+                0 12px 34px rgba(34, 211, 238, 0.24),
+                inset 0 1px 0 rgba(255, 255, 255, 0.28);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            inset: -40% -20%;
+            background: linear-gradient(100deg, transparent 20%, rgba(255, 255, 255, 0.42) 48%, transparent 72%);
+            transform: translateX(-130%) rotate(8deg);
+            transition: transform 0.55s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px) scale(1.01);
+            box-shadow:
+                0 16px 44px rgba(34, 211, 238, 0.34),
+                0 0 24px rgba(52, 211, 153, 0.18),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .btn:hover::before {
+            transform: translateX(130%) rotate(8deg);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            background: #374151;
+            color: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            background: rgba(15, 23, 42, 0.72);
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            box-shadow: none;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: none;
+            border-color: var(--text-muted);
+        }
+
+        /* Output Viewports */
+        .output-container {
+            margin-top: 2rem;
+            border-top: 1px solid var(--card-border);
+            padding-top: 1.5rem;
+        }
+
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .output-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .output-box {
+            background:
+                linear-gradient(180deg, rgba(2, 8, 23, 0.92), rgba(8, 17, 35, 0.92)),
+                radial-gradient(circle at top left, rgba(34, 211, 238, 0.08), transparent 38%);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 1.25rem;
+            min-height: 80px;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #e5e7eb;
+            position: relative;
+            box-shadow:
+                inset 0 0 28px rgba(34, 211, 238, 0.06),
+                0 0 28px rgba(2, 132, 199, 0.08);
+        }
+
+        .output-box::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(90deg, transparent, rgba(125, 211, 252, 0.07), transparent);
+            transform: translateX(-100%);
+            animation: dataSweep 4s ease-in-out infinite;
+        }
+
+        .output-box.streaming::after {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 15px;
+            background-color: var(--accent-color);
+            margin-left: 4px;
+            animation: blink 0.8s infinite;
+            vertical-align: middle;
+            box-shadow: 0 0 16px var(--accent-color);
+        }
+
+        /* Token stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .stat-card {
+            background: rgba(2, 8, 23, 0.62);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 0.75rem;
+            text-align: center;
+            box-shadow:
+                inset 0 0 18px rgba(34, 211, 238, 0.05),
+                0 12px 26px rgba(0, 0, 0, 0.2);
+            transition: transform 0.25s ease, border-color 0.25s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(52, 211, 153, 0.42);
+        }
+
+        .stat-val {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            text-shadow: 0 0 14px rgba(52, 211, 153, 0.36);
+        }
+
+        .stat-lbl {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Grid layouts */
+        .flex-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .flex-child {
+            flex: 1;
+        }
+
+        /* Booking Visuals */
+        .booking-status {
+            display: inline-block;
+            padding: 0.35rem 1rem;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        .status-confirmed {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.4);
+        }
+
+        .status-incomplete {
+            background-color: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+            border: 1px solid rgba(245, 158, 11, 0.4);
+        }
+
+        .booking-details-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .booking-details-table th, .booking-details-table td {
+            padding: 0.6rem 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .booking-details-table th {
+            color: var(--text-muted);
+            font-weight: 600;
+            width: 40%;
+        }
+
+        .booking-details-table td {
+            color: var(--text-main);
+        }
+
+        footer {
+            margin-top: auto;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            padding: 2rem 0;
+        }
+
+        /* Suggestions UI */
+        .suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .suggestion-chip {
+            background: rgba(15, 23, 42, 0.64);
+            border: 1px solid var(--card-border);
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: inset 0 0 12px rgba(34, 211, 238, 0.03);
+        }
+
+        .suggestion-chip:hover {
+            background: rgba(34, 211, 238, 0.14);
+            border-color: var(--accent-color);
+            color: var(--text-main);
+            transform: translateY(-2px);
+            box-shadow: 0 0 18px rgba(34, 211, 238, 0.16);
+        }
+
+        .chat-thread {
+            min-height: 360px;
+            max-height: 520px;
+            overflow-y: auto;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--card-border);
+            border-radius: 18px;
+            background:
+                radial-gradient(circle at 10% 0%, rgba(34, 211, 238, 0.09), transparent 34%),
+                rgba(2, 8, 23, 0.58);
+            box-shadow:
+                inset 0 0 34px rgba(34, 211, 238, 0.05),
+                0 16px 44px rgba(0, 0, 0, 0.22);
+        }
+
+        .chat-bubble {
+            width: fit-content;
+            max-width: min(78%, 720px);
+            padding: 0.9rem 1rem;
+            margin-bottom: 0.85rem;
+            border-radius: 16px;
+            white-space: pre-wrap;
+            line-height: 1.55;
+            font-size: 0.94rem;
+            animation: messageIn 0.24s ease-out;
+        }
+
+        .chat-bubble.user {
+            margin-left: auto;
+            color: #f8fafc;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.88), rgba(34, 211, 238, 0.62));
+            border: 1px solid rgba(125, 211, 252, 0.38);
+            box-shadow: 0 12px 28px rgba(37, 99, 235, 0.2);
+        }
+
+        .chat-bubble.assistant {
+            margin-right: auto;
+            color: #e5f6ff;
+            background: rgba(15, 23, 42, 0.82);
+            border: 1px solid rgba(52, 211, 153, 0.28);
+            box-shadow: 0 12px 28px rgba(34, 211, 238, 0.1);
+        }
+
+        .chat-bubble.thinking {
+            color: var(--text-muted);
+            border-style: dashed;
+        }
+
+        .chat-role {
+            margin-bottom: 0.35rem;
+            color: #67e8f9;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .chat-input {
+            min-height: 68px;
+        }
+
+        @keyframes messageIn {
+            from { opacity: 0; transform: translateY(10px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes titleFloat {
+            0%, 100% { transform: translateY(0) rotateX(0deg); }
+            50% { transform: translateY(-6px) rotateX(4deg); }
+        }
+
+        @keyframes gridDrift {
+            from { background-position: 0 0; }
+            to { background-position: 44px 44px; }
+        }
+
+        @keyframes orbitSpin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes dataSweep {
+            0%, 55% { transform: translateX(-110%); opacity: 0; }
+            70% { opacity: 1; }
+            100% { transform: translateX(110%); opacity: 0; }
+        }
+
+        @media (max-width: 760px) {
+            body {
+                padding: 1rem 0.75rem;
+            }
+
+            .tabs {
+                flex-wrap: wrap;
+            }
+
+            .tab-btn {
+                flex: 1 1 calc(50% - 0.35rem);
+                min-width: 145px;
+            }
+
+            .card {
+                padding: 1.25rem;
+            }
+
+            .flex-row {
+                flex-direction: column;
+            }
+
+            .hologram-orbit {
+                opacity: 0.45;
+                right: -24rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="neural-bg" aria-hidden="true"></canvas>
+    <div class="hologram-orbit" aria-hidden="true"></div>
+
+    <div class="container">
+        <header>
+            <h1>Spring AI integrated Client</h1>
+            <p>Kiểm thử trực quan các bài học của Session 02: Tích hợp LLM & ETL</p>
+            <div class="badge-container">
+                <span class="badge badge-spring">Spring Boot 3.4</span>
+                <span class="badge badge-gemini">AI Lecturer Mode</span>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="tabs">
+            <button class="tab-btn active" onclick="switchTab('simple-chat')">💬 Simple Chat</button>
+            <button class="tab-btn" onclick="switchTab('streaming-chat')">🌊 Streaming Chat</button>
+            <button class="tab-btn" onclick="switchTab('structured-output')">📋 Structured Output</button>
+            <button class="tab-btn" onclick="switchTab('booking-etl')">🏨 Booking ETL</button>
+            <button class="tab-btn" onclick="switchTab('session02-rag')">RAG Session 02</button>
+        </nav>
+
+        <!-- Tab 1: Simple Chat -->
+        <div id="simple-chat" class="tab-content active">
+            <div class="card">
+                <h2>Lesson 01 — Simple Chat & Token Usage</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">
+                    Giao tiếp đồng bộ (Synchronous). Hệ thống sẽ gửi câu hỏi đến LLM và đợi trả về toàn bộ câu trả lời, đồng thời thống kê dung lượng token sử dụng.
+                </p>
+
+                <div class="form-group">
+                    <label for="chat-message">Message của bạn</label>
+                    <div id="chat-thread" class="chat-thread">
+                        <div class="chat-bubble assistant">
+                            <div class="chat-role">AI Lecturer</div>
+                            <div>Chào bạn, tôi là trợ lý giảng viên AI/Spring Boot. Bạn có thể hỏi nối tiếp nhiều câu, tôi sẽ nhớ ngữ cảnh trong cuộc trò chuyện này.</div>
+                        </div>
+                    </div>
+                    <textarea id="chat-message" class="input-control chat-input" placeholder="Nhập câu hỏi rồi bấm Enter để gửi..."></textarea>
+                    <div class="suggestions">
+                        <span class="suggestion-chip" onclick="setPrompt('chat-message', 'Giải thích Token trong AI là gì và cách hoạt động?')">Token là gì?</span>
+                        <span class="suggestion-chip" onclick="setPrompt('chat-message', 'Tại sao tiếng Việt tốn nhiều token hơn tiếng Anh khi gọi LLM?')">Tại sao tiếng Việt tốn token?</span>
+                        <span class="suggestion-chip" onclick="setPrompt('chat-message', 'Cho tôi một ví dụ tiếp theo dựa trên câu vừa rồi')">Hỏi nối tiếp</span>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                    <button id="chat-btn" class="btn" onclick="runSimpleChat()">Gửi tin nhắn</button>
+                    <button id="chat-clear-btn" class="btn btn-secondary" onclick="clearChatMemory()">Xóa hội thoại</button>
+                </div>
+
+                <div class="stats-grid" style="margin-top: 1.5rem;">
+                    <div class="stat-card">
+                        <div class="stat-val" id="stat-input-tokens">0</div>
+                        <div class="stat-lbl">Input Tokens</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-val" id="stat-output-tokens">0</div>
+                        <div class="stat-lbl">Output Tokens</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-val" id="stat-total-tokens">0</div>
+                        <div class="stat-lbl">Total Tokens</div>
+                    </div>
+                    <div class="stat-card" style="border-color: rgba(34, 211, 238, 0.3);">
+                        <div class="stat-val" id="stat-memory-count" style="color: #67e8f9;">0</div>
+                        <div class="stat-lbl">Memory Turns</div>
+                    </div>
+                    <div class="stat-card" style="border-color: rgba(124, 58, 237, 0.3);">
+                        <div class="stat-val" id="stat-chat-time" style="color: #a78bfa;">0.00s</div>
+                        <div class="stat-lbl">Thinking Time</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: Streaming Chat -->
+        <div id="streaming-chat" class="tab-content">
+            <div class="card">
+                <h2>Lesson 02 — SSE Streaming Chat</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">
+                    Sử dụng Server-Sent Events (SSE). Server sẽ đẩy từng chunk từ LLM ngay khi có về client, giúp tạo hiệu ứng gõ phím mượt mà như ChatGPT.
+                </p>
+
+                <div class="form-group">
+                    <label for="stream-message">Message của bạn</label>
+                    <textarea id="stream-message" class="input-control" placeholder="Nhập câu hỏi cần trả lời dài..."></textarea>
+                    <div class="suggestions">
+                        <span class="suggestion-chip" onclick="setPrompt('stream-message', 'Viết một bài thơ ngắn 4 câu ca ngợi lập trình viên Java và Spring Boot.')">Viết bài thơ Java</span>
+                        <span class="suggestion-chip" onclick="setPrompt('stream-message', 'Giải thích thuật ngữ Server-Sent Events (SSE) theo cách dễ hiểu nhất.')">Giải thích SSE</span>
+                    </div>
+                </div>
+
+                <div class="flex-row">
+                    <div class="form-group flex-child">
+                        <label for="stream-temperature">Temperature</label>
+                        <input type="number" id="stream-temperature" class="input-control" value="0.7" min="0" max="2.0" step="0.1">
+                    </div>
+                    <div class="form-group flex-child">
+                        <label for="stream-system">System Prompt (Optional)</label>
+                        <input type="text" id="stream-system" class="input-control" placeholder="Bạn là trợ lý ảo...">
+                    </div>
+                </div>
+
+                <button id="stream-btn" class="btn" onclick="runStreamChat()">Bắt đầu Stream</button>
+
+                <div class="output-container" id="stream-output-panel" style="display: none;">
+                    <div class="output-header">
+                        <span class="output-title">Streaming Output (SSE)</span>
+                        <div style="font-size: 0.8rem; color: var(--text-muted); display: flex; gap: 1rem;">
+                            <span>Thinking (TTFT): <strong id="stream-ttft" style="color: #34d399;">0.00s</strong></span>
+                            <span>Total Time: <strong id="stream-total-time" style="color: #a78bfa;">0.00s</strong></span>
+                        </div>
+                        <button class="btn btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" onclick="copyText('stream-output')">Copy</button>
+                    </div>
+                    <div id="stream-output" class="output-box">Mở luồng kết nối...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 3: Structured Output -->
+        <div id="structured-output" class="tab-content">
+            <div class="card">
+                <h2>Lesson 03 — Structured Output API</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">
+                    Bắt buộc AI trả về JSON theo đúng định dạng được định nghĩa bởi Java Record/POJO. Hệ thống tự tạo schema, gửi lên AI, nhận JSON và parse tự động sang Object.
+                </p>
+
+                <div class="form-group">
+                    <label>Chọn chế độ trích xuất</label>
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                        <label style="display: inline-flex; align-items: center; text-transform: none; font-size: 0.9rem; font-weight: normal; cursor: pointer;">
+                            <input type="radio" name="extraction-type" value="person" checked style="margin-right: 0.5rem;" onclick="toggleExtractionPlaceholder('person')">
+                            Thông tin Cá nhân (PersonInfo Record)
+                        </label>
+                        <label style="display: inline-flex; align-items: center; text-transform: none; font-size: 0.9rem; font-weight: normal; cursor: pointer;">
+                            <input type="radio" name="extraction-type" value="products" style="margin-right: 0.5rem;" onclick="toggleExtractionPlaceholder('products')">
+                            Danh sách sản phẩm (List&lt;ProductExtraction&gt;)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="extract-text">Văn bản thô (Natural Text)</label>
+                    <textarea id="extract-text" class="input-control" placeholder="Nhập văn bản thô tại đây..."></textarea>
+                    <div class="suggestions" id="extract-suggestions">
+                        <!-- Dynamic based on selected type -->
+                    </div>
+                </div>
+
+                <button id="extract-btn" class="btn" onclick="runExtraction()">Extract Data</button>
+
+                <div class="output-container" id="extract-output-panel" style="display: none;">
+                    <div class="output-header">
+                        <span class="output-title">Extracted JSON (Type-safe Java Object)</span>
+                        <span style="font-size: 0.8rem; color: var(--text-muted); margin-right: 1rem;">Extraction Time: <strong id="extract-time" style="color: #a78bfa;">0.00s</strong></span>
+                        <button class="btn btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" onclick="copyText('extract-output')">Copy</button>
+                    </div>
+                    <div id="extract-output" class="output-box">Đang trích xuất...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 4: Booking ETL -->
+        <div id="booking-etl" class="tab-content">
+            <div class="card">
+                <h2>Lesson 04 — capstone: Booking ETL Pipeline</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">
+                    Mô phỏng quy trình ETL hoàn chỉnh: Đọc tin nhắn tự nhiên của khách hàng đặt phòng, trích xuất cấu trúc dữ liệu qua AI (đặt Temp = 0.0), kiểm tra tính đầy đủ và trả về kết quả DB-ready.
+                </p>
+
+                <div class="form-group">
+                    <label for="booking-message">Tin nhắn đặt phòng của khách</label>
+                    <textarea id="booking-message" class="input-control" placeholder="Khách hàng nhắn gì..."></textarea>
+                    <div class="suggestions">
+                        <span class="suggestion-chip" onclick="setPrompt('booking-message', 'Chào bạn, tôi là Lê Thị Hoa. Tôi muốn đặt 1 phòng đôi cho 2 người lớn, từ ngày 15 tháng 8 đến 18 tháng 8 năm 2026. Tôi cần phòng có điều hòa và minibar nhé.')">Đặt phòng ĐẦY ĐỦ</span>
+                        <span class="suggestion-chip" onclick="setPrompt('booking-message', 'Tôi muốn đặt một phòng suite hạng sang cho tôi là Trần Minh Khôi, tôi sẽ tới vào ngày 01/09/2026 và đi vào 05/09/2026. Hãy chuẩn bị bồn tắm.')">Đặt phòng thiếu số người</span>
+                        <span class="suggestion-chip" onclick="setPrompt('booking-message', 'Tôi muốn đặt phòng đơn, tên tôi là Phạm Văn C.')">Đặt phòng THIẾU NHIỀU thứ</span>
+                    </div>
+                </div>
+
+                <button id="booking-btn" class="btn" onclick="runBookingEtl()">Chạy ETL Pipeline</button>
+
+                <div class="output-container" id="booking-output-panel" style="display: none;">
+                    <div class="output-header">
+                        <span class="output-title">ETL Pipeline Status & Details</span>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">Pipeline Time: <strong id="booking-time" style="color: #a78bfa;">0.00s</strong></span>
+                            <span id="booking-status-badge" class="booking-status">UNKNOWN</span>
+                        </div>
+                    </div>
+                    
+                    <div id="booking-msg-banner" style="padding: 0.85rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.95rem; font-weight: 500;">
+                        Thông tin hiển thị ở đây
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div class="flex-child">
+                            <h4 style="font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem;">Thông tin trích xuất:</h4>
+                            <table class="booking-details-table">
+                                <tbody>
+                                    <tr>
+                                        <th>Tên khách hàng</th>
+                                        <td id="td-guest-name">-</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Loại phòng</th>
+                                        <td id="td-room-type">-</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Số người</th>
+                                        <td id="td-guests">-</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Ngày nhận phòng (Check-in)</th>
+                                        <td id="td-check-in">-</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Ngày trả phòng (Check-out)</th>
+                                        <td id="td-check-out">-</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Số đêm ở</th>
+                                        <td id="td-nights">-</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Tiện nghi (Amenities)</th>
+                                        <td id="td-amenities">-</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Yêu cầu đặc biệt</th>
+                                        <td id="td-special">-</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="flex-child" style="margin-top: 1rem;">
+                            <h4 style="font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem;">Raw JSON Response:</h4>
+                            <div id="booking-raw-json" class="output-box" style="max-height: 150px; font-size: 0.8rem;">{}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 5: Session 02 RAG -->
+        <div id="session02-rag" class="tab-content">
+            <div class="card">
+                <h2>Session 02 RAG Chatbot</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">
+                    Hỏi đáp dựa trên tài liệu Session02-Spring-AI-LLM.md. Backend retrieve các chunk liên quan, đưa vào prompt, rồi trả về câu trả lời kèm nguồn.
+                </p>
+
+                <div class="form-group">
+                    <label for="rag-message">Câu hỏi về Session 02</label>
+                    <textarea id="rag-message" class="input-control" placeholder="Ví dụ: RAG khác chat bình thường như thế nào?"></textarea>
+                    <div class="suggestions">
+                        <span class="suggestion-chip" onclick="setPrompt('rag-message', 'Giải thích Spring AI loosely coupled design trong Session 02')">Loosely coupled</span>
+                        <span class="suggestion-chip" onclick="setPrompt('rag-message', 'Tại sao ETL nên dùng temperature bằng 0?')">ETL temperature 0</span>
+                        <span class="suggestion-chip" onclick="setPrompt('rag-message', 'Tóm tắt các lesson của Session 02')">Tóm tắt Session 02</span>
+                    </div>
+                </div>
+
+                <button id="rag-btn" class="btn" onclick="runSession02Rag()">Hỏi bằng RAG</button>
+
+                <div class="output-container" id="rag-output-panel" style="display: none;">
+                    <div class="output-header">
+                        <span class="output-title">RAG Answer</span>
+                        <span style="font-size: 0.8rem; color: var(--text-muted);">Time: <strong id="rag-time" style="color: #a78bfa;">0.00s</strong></span>
+                    </div>
+                    <div id="rag-output" class="output-box">Đang xử lý...</div>
+
+                    <div class="output-header" style="margin-top: 1rem;">
+                        <span class="output-title">Retrieved Sources</span>
+                    </div>
+                    <div id="rag-sources" class="output-box" style="max-height: 240px; font-size: 0.8rem;">[]</div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2026 AI Integrated in Action | Rikkei Education. Built with Spring AI.</p>
+        </footer>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8080';
+
+        const neuralCanvas = document.getElementById('neural-bg');
+        const neuralCtx = neuralCanvas.getContext('2d');
+        let neuralNodes = [];
+        let pointer = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+
+        function resizeNeuralCanvas() {
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            neuralCanvas.width = Math.floor(window.innerWidth * dpr);
+            neuralCanvas.height = Math.floor(window.innerHeight * dpr);
+            neuralCanvas.style.width = `${window.innerWidth}px`;
+            neuralCanvas.style.height = `${window.innerHeight}px`;
+            neuralCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            const count = Math.min(118, Math.max(54, Math.floor(window.innerWidth * window.innerHeight / 15500)));
+            neuralNodes = Array.from({ length: count }, (_, index) => ({
+                x: Math.random() * window.innerWidth,
+                y: Math.random() * window.innerHeight,
+                z: 0.45 + Math.random() * 1.55,
+                vx: (Math.random() - 0.5) * 0.42,
+                vy: (Math.random() - 0.5) * 0.42,
+                pulse: Math.random() * Math.PI * 2,
+                hue: index % 3 === 0 ? 186 : index % 3 === 1 ? 155 : 213
+            }));
+        }
+
+        function drawNeuralNetwork() {
+            neuralCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+            neuralCtx.globalCompositeOperation = 'lighter';
+
+            const px = (pointer.x - window.innerWidth / 2) * 0.012;
+            const py = (pointer.y - window.innerHeight / 2) * 0.012;
+
+            for (const node of neuralNodes) {
+                node.x += node.vx * node.z;
+                node.y += node.vy * node.z;
+                node.pulse += 0.025 * node.z;
+
+                if (node.x < -30) node.x = window.innerWidth + 30;
+                if (node.x > window.innerWidth + 30) node.x = -30;
+                if (node.y < -30) node.y = window.innerHeight + 30;
+                if (node.y > window.innerHeight + 30) node.y = -30;
+            }
+
+            for (let i = 0; i < neuralNodes.length; i++) {
+                const a = neuralNodes[i];
+                for (let j = i + 1; j < neuralNodes.length; j++) {
+                    const b = neuralNodes[j];
+                    const ax = a.x + px * a.z;
+                    const ay = a.y + py * a.z;
+                    const bx = b.x + px * b.z;
+                    const by = b.y + py * b.z;
+                    const dx = ax - bx;
+                    const dy = ay - by;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 145) {
+                        const alpha = (1 - distance / 145) * 0.22;
+                        neuralCtx.beginPath();
+                        neuralCtx.moveTo(ax, ay);
+                        neuralCtx.lineTo(bx, by);
+                        neuralCtx.strokeStyle = `rgba(103, 232, 249, ${alpha})`;
+                        neuralCtx.lineWidth = 0.65 + (a.z + b.z) * 0.12;
+                        neuralCtx.stroke();
+                    }
+                }
+            }
+
+            for (const node of neuralNodes) {
+                const x = node.x + px * node.z;
+                const y = node.y + py * node.z;
+                const radius = 1.25 + node.z * 1.25 + Math.sin(node.pulse) * 0.45;
+                const glow = neuralCtx.createRadialGradient(x, y, 0, x, y, radius * 7);
+                glow.addColorStop(0, `hsla(${node.hue}, 95%, 72%, 0.9)`);
+                glow.addColorStop(0.35, `hsla(${node.hue}, 95%, 58%, 0.22)`);
+                glow.addColorStop(1, `hsla(${node.hue}, 95%, 48%, 0)`);
+
+                neuralCtx.beginPath();
+                neuralCtx.fillStyle = glow;
+                neuralCtx.arc(x, y, radius * 7, 0, Math.PI * 2);
+                neuralCtx.fill();
+
+                neuralCtx.beginPath();
+                neuralCtx.fillStyle = `hsla(${node.hue}, 95%, 80%, 0.95)`;
+                neuralCtx.arc(x, y, radius, 0, Math.PI * 2);
+                neuralCtx.fill();
+            }
+
+            neuralCtx.globalCompositeOperation = 'source-over';
+            requestAnimationFrame(drawNeuralNetwork);
+        }
+
+        window.addEventListener('resize', resizeNeuralCanvas);
+        window.addEventListener('pointermove', (event) => {
+            pointer = { x: event.clientX, y: event.clientY };
+        });
+        resizeNeuralCanvas();
+        drawNeuralNetwork();
+
+        // Suggestion items placeholders
+        const suggestionsData = {
+            person: [
+                { text: "Chào bạn, tôi tên là Nguyễn Văn An, năm nay 31 tuổi. Có gì liên hệ tôi qua email an.nguyen@company.com nhé.", label: "Người đầy đủ thông tin" },
+                { text: "Thông tin liên hệ của chị Trần Thị Bình: email binh.tran@outlook.com và số điện thoại 0901234567.", label: "Thiếu tuổi" }
+            ],
+            products: [
+                { text: "Tôi mua 5 hộp bút màu đỏ hết tổng cộng 75000 VND, còn 1 cái thước kẻ xanh lá giá 10000 VND hiện đang hết hàng.", label: "Đơn mua văn phòng phẩm" },
+                { text: "Cho tôi order 2 ly trà sữa matcha giá 4.5 USD một cốc, thêm 1 cái bánh ngọt sô-cô-la giá 3.2 USD nhé, tất cả đều sẵn hàng.", label: "Order đồ uống" }
+            ]
+        };
+
+        function setPrompt(inputId, val) {
+            document.getElementById(inputId).value = val;
+        }
+
+        function toggleExtractionPlaceholder(type) {
+            const textarea = document.getElementById('extract-text');
+            const suggestionsDiv = document.getElementById('extract-suggestions');
+            
+            // Set suggestions
+            suggestionsDiv.innerHTML = '';
+            suggestionsData[type].forEach(item => {
+                const chip = document.createElement('span');
+                chip.className = 'suggestion-chip';
+                chip.textContent = item.label;
+                chip.onclick = () => setPrompt('extract-text', item.text);
+                suggestionsDiv.appendChild(chip);
+            });
+
+            if (type === 'person') {
+                textarea.placeholder = "Nhập văn bản giới thiệu bản thân hoặc liên hệ để trích xuất...";
+                if (suggestionsData.person.length > 0) {
+                    textarea.value = suggestionsData.person[0].text;
+                }
+            } else {
+                textarea.placeholder = "Nhập nội dung đơn hàng (ví dụ: 'Tôi mua 3 quyển sách giá 25000 VNĐ...')";
+                if (suggestionsData.products.length > 0) {
+                    textarea.value = suggestionsData.products[0].text;
+                }
+            }
+        }
+
+        // Initialize extraction tab defaults
+        toggleExtractionPlaceholder('person');
+
+        // Tab Switcher
+        function switchTab(tabId) {
+            // Remove active from all tabs
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            // Find clicked index or target
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            if (tabId === 'simple-chat') tabBtns[0].classList.add('active');
+            else if (tabId === 'streaming-chat') tabBtns[1].classList.add('active');
+            else if (tabId === 'structured-output') tabBtns[2].classList.add('active');
+            else if (tabId === 'booking-etl') tabBtns[3].classList.add('active');
+            else if (tabId === 'session02-rag') tabBtns[4].classList.add('active');
+
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        // Copy content helper
+        function copyText(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
+        }
+
+        // 1. Simple Chat Call
+        async function runSimpleChat() {
+            const message = document.getElementById('chat-message').value;
+            const btn = document.getElementById('chat-btn');
+            const outputPanel = document.getElementById('chat-output-panel');
+            const outputBox = document.getElementById('chat-output');
+
+            if (!message.trim()) {
+                alert('Vui lòng nhập tin nhắn!');
+                return;
+            }
+
+            btn.disabled = true;
+            outputPanel.style.display = 'block';
+            outputBox.textContent = 'Đang gọi AI Model...';
+            outputBox.className = 'output-box';
+            document.getElementById('stat-chat-time').textContent = 'Calculating...';
+
+            const startTime = performance.now();
+
+            try {
+                const response = await fetch(`${API_BASE}/api/chat`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message })
+                });
+
+                const data = await response.json();
+                const duration = ((performance.now() - startTime) / 1000).toFixed(2);
+
+                if (response.ok) {
+                    outputBox.textContent = data.content;
+                    document.getElementById('stat-input-tokens').textContent = data.inputTokens;
+                    document.getElementById('stat-output-tokens').textContent = data.outputTokens;
+                    document.getElementById('stat-total-tokens').textContent = data.totalTokens;
+                    document.getElementById('stat-chat-time').textContent = `${duration}s`;
+                } else {
+                    outputBox.textContent = `Error: ${data.error || 'Yêu cầu thất bại'}`;
+                    document.getElementById('stat-chat-time').textContent = 'Error';
+                }
+            } catch (err) {
+                outputBox.textContent = `Error: Không thể kết nối backend (${err.message}). Hãy chắc chắn Spring Boot app đang chạy trên cổng 8080.`;
+                document.getElementById('stat-chat-time').textContent = 'Error';
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        const chatConversationId = localStorage.getItem('chatConversationId') || crypto.randomUUID();
+        localStorage.setItem('chatConversationId', chatConversationId);
+
+        function appendChatMessage(role, content, extraClass = '') {
+            const thread = document.getElementById('chat-thread');
+            const bubble = document.createElement('div');
+            bubble.className = `chat-bubble ${role} ${extraClass}`.trim();
+
+            const roleLabel = document.createElement('div');
+            roleLabel.className = 'chat-role';
+            roleLabel.textContent = role === 'user' ? 'Bạn' : 'AI Lecturer';
+
+            const body = document.createElement('div');
+            body.textContent = content;
+
+            bubble.appendChild(roleLabel);
+            bubble.appendChild(body);
+            thread.appendChild(bubble);
+            thread.scrollTop = thread.scrollHeight;
+            return bubble;
+        }
+
+        function setupChatInput() {
+            const input = document.getElementById('chat-message');
+            input.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' && !event.shiftKey) {
+                    event.preventDefault();
+                    runSimpleChat();
+                }
+            });
+        }
+        setupChatInput();
+
+        async function clearChatMemory() {
+            const thread = document.getElementById('chat-thread');
+            thread.innerHTML = '';
+            appendChatMessage('assistant', 'Tôi đã xóa lịch sử hội thoại. Bây giờ chúng ta bắt đầu một cuộc trò chuyện mới.');
+            document.getElementById('stat-memory-count').textContent = '0';
+            document.getElementById('stat-input-tokens').textContent = '0';
+            document.getElementById('stat-output-tokens').textContent = '0';
+            document.getElementById('stat-total-tokens').textContent = '0';
+            document.getElementById('stat-chat-time').textContent = '0.00s';
+
+            try {
+                await fetch(`${API_BASE}/api/chat/memory/${encodeURIComponent(chatConversationId)}`, {
+                    method: 'DELETE'
+                });
+            } catch (err) {
+                appendChatMessage('assistant', `Không thể xóa memory ở backend: ${err.message}`);
+            }
+        }
+
+        async function runSimpleChat() {
+            const input = document.getElementById('chat-message');
+            const message = input.value;
+            const btn = document.getElementById('chat-btn');
+
+            if (!message.trim()) {
+                alert('Vui lòng nhập tin nhắn!');
+                return;
+            }
+
+            btn.disabled = true;
+            input.value = '';
+            appendChatMessage('user', message);
+            const thinkingBubble = appendChatMessage('assistant', 'Đang suy nghĩ dựa trên lịch sử hội thoại...', 'thinking');
+            document.getElementById('stat-chat-time').textContent = 'Calculating...';
+
+            const startTime = performance.now();
+
+            try {
+                const response = await fetch(`${API_BASE}/api/chat/memory`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ conversationId: chatConversationId, message })
+                });
+
+                const data = await response.json();
+                const duration = ((performance.now() - startTime) / 1000).toFixed(2);
+                thinkingBubble.remove();
+
+                if (response.ok) {
+                    appendChatMessage('assistant', data.content);
+                    document.getElementById('stat-input-tokens').textContent = data.inputTokens;
+                    document.getElementById('stat-output-tokens').textContent = data.outputTokens;
+                    document.getElementById('stat-total-tokens').textContent = data.totalTokens;
+                    document.getElementById('stat-memory-count').textContent = data.memoryMessages;
+                    document.getElementById('stat-chat-time').textContent = `${duration}s`;
+                } else {
+                    appendChatMessage('assistant', `Error: ${data.error || 'Yêu cầu thất bại'}`);
+                    document.getElementById('stat-chat-time').textContent = 'Error';
+                }
+            } catch (err) {
+                thinkingBubble.remove();
+                appendChatMessage('assistant', `Error: Không thể kết nối backend (${err.message}). Hãy chắc chắn Spring Boot app đang chạy trên cổng 8080.`);
+                document.getElementById('stat-chat-time').textContent = 'Error';
+            } finally {
+                btn.disabled = false;
+                input.focus();
+            }
+        }
+
+        // 2. Streaming Chat Call (SSE)
+        let eventSource = null;
+        function runStreamChat() {
+            const message = document.getElementById('stream-message').value;
+            const systemPrompt = document.getElementById('stream-system').value;
+            const temperature = parseFloat(document.getElementById('stream-temperature').value);
+            const btn = document.getElementById('stream-btn');
+            const outputPanel = document.getElementById('stream-output-panel');
+            const outputBox = document.getElementById('stream-output');
+
+            if (!message.trim()) {
+                alert('Vui lòng nhập tin nhắn!');
+                return;
+            }
+
+            if (eventSource) {
+                eventSource.close();
+            }
+
+            outputPanel.style.display = 'block';
+            outputBox.textContent = '';
+            outputBox.classList.add('streaming');
+            btn.disabled = true;
+
+            document.getElementById('stream-ttft').textContent = 'Thinking...';
+            document.getElementById('stream-total-time').textContent = 'Streaming...';
+
+            const startTime = performance.now();
+            let firstTokenReceived = false;
+
+            const queryParams = new URLSearchParams({ message });
+            const sseUrl = `${API_BASE}/api/chat/stream?${queryParams.toString()}`;
+
+            eventSource = new EventSource(sseUrl);
+
+            eventSource.onmessage = (event) => {
+                if (!firstTokenReceived) {
+                    const ttft = ((performance.now() - startTime) / 1000).toFixed(2);
+                    document.getElementById('stream-ttft').textContent = `${ttft}s`;
+                    firstTokenReceived = true;
+                }
+                outputBox.textContent += event.data;
+                outputBox.scrollTop = outputBox.scrollHeight;
+            };
+
+            eventSource.onerror = (err) => {
+                eventSource.close();
+                outputBox.classList.remove('streaming');
+                btn.disabled = false;
+                
+                const totalTime = ((performance.now() - startTime) / 1000).toFixed(2);
+                document.getElementById('stream-total-time').textContent = `${totalTime}s`;
+                if (!firstTokenReceived) {
+                    document.getElementById('stream-ttft').textContent = 'N/A';
+                }
+                console.log('Stream ended or error occurred', err);
+            };
+        }
+
+        // 3. Structured Output Call
+        async function runExtraction() {
+            const text = document.getElementById('extract-text').value;
+            const type = document.querySelector('input[name="extraction-type"]:checked').value;
+            const btn = document.getElementById('extract-btn');
+            const outputPanel = document.getElementById('extract-output-panel');
+            const outputBox = document.getElementById('extract-output');
+
+            if (!text.trim()) {
+                alert('Vui lòng nhập văn bản thô!');
+                return;
+            }
+
+            btn.disabled = true;
+            outputPanel.style.display = 'block';
+            outputBox.textContent = 'Đang trích xuất dữ liệu có cấu trúc...';
+            document.getElementById('extract-time').textContent = 'Calculating...';
+
+            const startTime = performance.now();
+
+            try {
+                const endpoint = `/api/extract/${type}`;
+                const response = await fetch(`${API_BASE}${endpoint}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text })
+                });
+
+                const duration = ((performance.now() - startTime) / 1000).toFixed(2);
+                document.getElementById('extract-time').textContent = `${duration}s`;
+
+                if (response.ok) {
+                    const data = await response.json();
+                    outputBox.textContent = JSON.stringify(data, null, 2);
+                } else {
+                    const errText = await response.text();
+                    outputBox.textContent = `Error: Trích xuất thất bại.\nChi tiết:\n${errText}`;
+                }
+            } catch (err) {
+                outputBox.textContent = `Error: Không thể kết nối backend (${err.message}).`;
+                document.getElementById('extract-time').textContent = 'Error';
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        // 4. Booking ETL Call
+        async function runBookingEtl() {
+            const message = document.getElementById('booking-message').value;
+            const btn = document.getElementById('booking-btn');
+            const outputPanel = document.getElementById('booking-output-panel');
+
+            if (!message.trim()) {
+                alert('Vui lòng nhập tin nhắn của khách!');
+                return;
+            }
+
+            btn.disabled = true;
+            outputPanel.style.display = 'block';
+
+            // Reset table details
+            document.getElementById('td-guest-name').textContent = 'Loading...';
+            document.getElementById('td-room-type').textContent = 'Loading...';
+            document.getElementById('td-guests').textContent = 'Loading...';
+            document.getElementById('td-check-in').textContent = 'Loading...';
+            document.getElementById('td-check-out').textContent = 'Loading...';
+            document.getElementById('td-nights').textContent = 'Loading...';
+            document.getElementById('td-amenities').textContent = 'Loading...';
+            document.getElementById('td-special').textContent = 'Loading...';
+            document.getElementById('booking-raw-json').textContent = 'Loading...';
+            document.getElementById('booking-time').textContent = 'Calculating...';
+            
+            const badge = document.getElementById('booking-status-badge');
+            badge.className = 'booking-status';
+            badge.textContent = 'PROCESSING';
+
+            const banner = document.getElementById('booking-msg-banner');
+            banner.style.backgroundColor = 'rgba(255,255,255,0.05)';
+            banner.style.color = 'var(--text-main)';
+            banner.textContent = 'AI ETL Pipeline is transforming text...';
+
+            const startTime = performance.now();
+
+            try {
+                const response = await fetch(`${API_BASE}/api/booking/extract`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message })
+                });
+
+                const data = await response.json();
+                const duration = ((performance.now() - startTime) / 1000).toFixed(2);
+                document.getElementById('booking-time').textContent = `${duration}s`;
+
+                if (response.ok) {
+                    // Update status badge
+                    badge.textContent = data.status;
+                    if (data.status === 'CONFIRMED') {
+                        badge.classList.add('status-confirmed');
+                        banner.style.backgroundColor = 'rgba(16, 185, 129, 0.15)';
+                        banner.style.color = '#34d399';
+                    } else {
+                        badge.classList.add('status-incomplete');
+                        banner.style.backgroundColor = 'rgba(245, 158, 11, 0.15)';
+                        banner.style.color = '#f59e0b';
+                    }
+                    banner.textContent = data.message;
+
+                    // Extracted values
+                    const ext = data.booking || data.extracted;
+                    if (ext) {
+                        document.getElementById('td-guest-name').textContent = ext.guestName || '(Trống)';
+                        document.getElementById('td-room-type').textContent = ext.roomType || '(Trống)';
+                        document.getElementById('td-guests').textContent = ext.numberOfGuests || '(Trống)';
+                        document.getElementById('td-check-in').textContent = ext.checkInDate || '(Trống)';
+                        document.getElementById('td-check-out').textContent = ext.checkOutDate || '(Trống)';
+                        document.getElementById('td-nights').textContent = data.nights || ext.numberOfNights || 0;
+                        document.getElementById('td-amenities').textContent = ext.amenities && ext.amenities.length > 0 ? ext.amenities.join(', ') : '(Không có)';
+                        document.getElementById('td-special').textContent = ext.specialRequest || '(Không có)';
+                    }
+                    document.getElementById('booking-raw-json').textContent = JSON.stringify(data, null, 2);
+
+                } else {
+                    banner.textContent = `Lỗi hệ thống: ${data.error || 'Trích xuất thất bại'}`;
+                    banner.style.backgroundColor = 'rgba(239, 68, 68, 0.15)';
+                    banner.style.color = '#ef4444';
+                    badge.textContent = 'FAILED';
+                }
+            } catch (err) {
+                banner.textContent = `Error: Không kết nối được đến server (${err.message}).`;
+                banner.style.backgroundColor = 'rgba(239, 68, 68, 0.15)';
+                banner.style.color = '#ef4444';
+                badge.textContent = 'FAILED';
+                document.getElementById('booking-time').textContent = 'Error';
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        // 5. Session 02 RAG Call
+        async function runSession02Rag() {
+            const message = document.getElementById('rag-message').value;
+            const btn = document.getElementById('rag-btn');
+            const outputPanel = document.getElementById('rag-output-panel');
+            const outputBox = document.getElementById('rag-output');
+            const sourcesBox = document.getElementById('rag-sources');
+
+            if (!message.trim()) {
+                alert('Vui lòng nhập câu hỏi!');
+                return;
+            }
+
+            btn.disabled = true;
+            outputPanel.style.display = 'block';
+            outputBox.textContent = 'Đang retrieve tài liệu và gọi AI...';
+            sourcesBox.textContent = '[]';
+            document.getElementById('rag-time').textContent = 'Calculating...';
+
+            const startTime = performance.now();
+
+            try {
+                const response = await fetch(`${API_BASE}/api/rag/session02`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message })
+                });
+
+                const data = await response.json();
+                const duration = ((performance.now() - startTime) / 1000).toFixed(2);
+                document.getElementById('rag-time').textContent = `${duration}s`;
+
+                if (response.ok) {
+                    outputBox.textContent = data.content;
+                    sourcesBox.textContent = JSON.stringify(data.sources, null, 2);
+                } else {
+                    outputBox.textContent = `Error: ${data.error || 'RAG request failed'}`;
+                    document.getElementById('rag-time').textContent = 'Error';
+                }
+            } catch (err) {
+                outputBox.textContent = `Error: Không thể kết nối backend (${err.message}).`;
+                document.getElementById('rag-time').textContent = 'Error';
+            } finally {
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
